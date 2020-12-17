@@ -12,13 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ZonasController extends AbstractController
 {
     /**
-     * @Route("/zonas", name="zonas")
+     * @Route("/zonas/index", name="index")
      */
     public function index(): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $zona = $em->getRepository(Zonas::class)->findAll();
+        
         return $this->render('zonas/index.html.twig', [
-            'controller_name' => 'ZonasController',
-        ]);
+            'zona' => $zona
+            ]);
+
     }
 
 
@@ -46,7 +50,6 @@ class ZonasController extends AbstractController
 
     /**
      * @Route("/zonas/create", name="create")
-     * @Route("/zonas/index", name="index")
      */
     public function createAction(Request $request)
     {
@@ -60,14 +63,14 @@ class ZonasController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($zona);
             $em->flush();
-            
+            $this->addFlash('exito', Zonas::REGISTRO_EXITOSO);
             /*$successMessage = $this->get('translator')->trans('The iglesia has been created.');
             $this->addFlash('mensaje', $successMessage);            */
             
            return $this->redirectToRoute('index');
         }
         
-        return $this->render('zonas/add.html.twig', array('formulario' => $form->createView()));
+        return $this->render('zonas/add.html.twig', ['form' => $form->createView()]);
     }
 
 
