@@ -12,6 +12,8 @@ class Zonas
 {
 
     const REGISTRO_EXITOSO = 'Registro una nueva zona exitosamente!';
+
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
