@@ -135,6 +135,16 @@ class User implements UserInterface
         return $this;
     }
 
+/**
+ * 
+ * @return string String representation of this class
+ */
+public function __toString()
+{
+    return $this->user;
+}
+
+
     /**
      * @see UserInterface
      */
