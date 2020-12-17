@@ -16,13 +16,14 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->findAll();
-        
-        return $this->render('user/index.html.twig', [
-            'user' => $user
-            ]);
 
+                $em = $this->getDoctrine()->getManager();
+                $norte = $em->getRepository(User::class)->findByZonas(1);
+                $centro = $em->getRepository(User::class)->findByZonas(2);
+                $sur = $em->getRepository(User::class)->findByZonas(3);
+    
+                
+            return $this->render('user/index.html.twig', array('norte' => $norte, 'centro' => $centro, 'sur' => $sur ));
     }
 
 

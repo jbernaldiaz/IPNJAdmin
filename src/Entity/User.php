@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
-
+    
     const REGISTRO_EXITOSO = 'Registro un nuevo usuario exitosamente!';
 
     /**
@@ -135,14 +135,8 @@ class User implements UserInterface
         return $this;
     }
 
-/**
- * 
- * @return string String representation of this class
- */
-public function __toString()
-{
-    return $this->user;
-}
+
+    
 
 
     /**
@@ -232,14 +226,9 @@ public function __toString()
         return $this;
     }
 
-    /** 
-    *
-    * @return string String representation of this class
-    */
     public function __toString()
     {
-        return $this->user;
-    }
-   
-   
+        return $this->iglesia;
+    } 
+
 }
