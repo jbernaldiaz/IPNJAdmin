@@ -33,6 +33,33 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="iglesia", type="string", length=100)
+     */
+    private $iglesia;  
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Zonas", inversedBy="user")
+     */
+    private $zonas;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EnviosFN", mappedBy="user")
+     */
+    private $enviosFN;
+
 
     public function getId(): ?int
     {
@@ -110,5 +137,55 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    
+
+    /**
+     * Get the value of iglesia
+     *
+     * @return  string
+     */ 
+    public function getIglesia()
+    {
+        return $this->iglesia;
+    }
+
+    /**
+     * Set the value of iglesia
+     *
+     * @param  string  $iglesia
+     *
+     * @return  self
+     */ 
+    public function setIglesia(string $iglesia)
+    {
+        $this->iglesia = $iglesia;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isActive
+     *
+     * @return  boolean
+     */ 
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set the value of isActive
+     *
+     * @param  boolean  $isActive
+     *
+     * @return  self
+     */ 
+    public function setIsActive(boolean $isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 }

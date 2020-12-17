@@ -22,6 +22,11 @@ class Zonas
      */
     private $zona;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="zonas")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
