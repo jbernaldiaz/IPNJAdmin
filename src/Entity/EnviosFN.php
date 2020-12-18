@@ -5,11 +5,31 @@ namespace App\Entity;
 use App\Repository\EnviosFNRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass=EnviosFNRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class EnviosFN
-{
+{  
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue(): void
+    {
+        $this->create_at = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setUpdatedAtValue(): void
+    {
+        $this->update_at = new \DateTime();
+    }
+
+    const REGISTRO_EXITOSO = 'Registro un nuevo envio exitosamente!';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -302,4 +322,25 @@ class EnviosFN
 
         return $this;
     }
+
+ 
+    
+    /** 
+     * @ORM\PrePersist
+     */
+    public function setCreateAtValue()
+    {
+        $this->createAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function setUpdateAtValue()
+    {
+        $this->updateAt = new \DateTime();
+    }
+
+
 }
