@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
+
 
 class UserController extends AbstractController
 {
@@ -52,7 +55,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/create", name="createUser")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = new User();
         $form = $this->createCreateForm($user);
@@ -62,6 +65,7 @@ class UserController extends AbstractController
         {
             
             $em = $this->getDoctrine()->getManager();
+            $user->setPassword($passwordEncoder->encodePassword($user, $form['password']->getData()));
             $em->persist($user);
             $em->flush();
             $this->addFlash('exito', User::REGISTRO_EXITOSO);
