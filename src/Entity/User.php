@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -199,7 +200,7 @@ class User implements UserInterface
      *
      * @return  self
      */ 
-    public function setIsActive(boolean $isActive)
+    public function setIsActive(Boolean $isActive)
     {
         $this->isActive = $isActive;
 

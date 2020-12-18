@@ -16,12 +16,13 @@ class EnviosFNController extends AbstractController
      */
     public function index(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $envios = $em->getRepository(EnviosFN::class)->findAll();
-        
+        $repository = $this->getDoctrine()->getRepository(EnviosFN::class);
+        $envio = $repository->findAll();
+
         return $this->render('envios_fn/index.html.twig', [
-            'envios' => $envios
+            'envio' => $envio
             ]);
+
     }
 
     
@@ -58,13 +59,14 @@ class EnviosFNController extends AbstractController
         
        if ($form->isSubmitted() && $form->isValid())
         {
-            
+            $user = $this->getUser();
+            $envios->setUser($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($envios);
             $em->flush();
             $this->addFlash('exito', EnviosFN::REGISTRO_EXITOSO);
             
-           return $this->redirectToRoute('indexEnvios');
+           return $this->redirectToRoute('addEnvios');
         }
         
         return $this->render('envios_fn/add.html.twig', ['form' => $form->createView()]);
