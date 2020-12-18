@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Zonas
 {
+
+    const REGISTRO_EXITOSO = 'Registro una nueva zona exitosamente!';
+
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -26,6 +30,14 @@ class Zonas
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="zonas")
      */
     private $user;
+
+    /**
+     * @return string String representation of this class
+     */
+    public function __toString()
+    {
+        return $this->zona;
+    }
 
     public function getId(): ?int
     {

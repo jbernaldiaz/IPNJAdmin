@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -11,6 +12,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    
+    const REGISTRO_EXITOSO = 'Registro un nuevo usuario exitosamente!';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -61,6 +65,15 @@ class User implements UserInterface
     private $enviosFN;
 
 
+    
+    
+    public function __construct()
+    {
+        $this->iglesias = new ArrayCollection();
+        $this->isActive = true;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,7 +108,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_USER, ROLE_ADMIN, ROLE_SUPER';
 
         return array_unique($roles);
     }
@@ -121,6 +134,10 @@ class User implements UserInterface
 
         return $this;
     }
+
+
+    
+
 
     /**
      * @see UserInterface
@@ -188,4 +205,30 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * Get the value of zonas
+     */ 
+    public function getZonas()
+    {
+        return $this->zonas;
+    }
+
+    /**
+     * Set the value of zonas
+     *
+     * @return  self
+     */ 
+    public function setZonas($zonas)
+    {
+        $this->zonas = $zonas;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->iglesia;
+    } 
+
 }

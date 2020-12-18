@@ -1,0 +1,19 @@
+{% for message in app.flashes('exito') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+<table>
+	<thead>
+        <tr>
+            <th>Zonas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for zona in zona %}
+            <tr>
+                <td>{{ zona }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

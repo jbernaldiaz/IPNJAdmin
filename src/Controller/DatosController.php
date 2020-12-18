@@ -11,6 +11,6 @@ class DatosController
      */
     public function homepage()
     {
-        return new Response('What a bewitching controller we have conjured!');
+        return new Response('Probando la sincronizacion de git!');
     }
 }

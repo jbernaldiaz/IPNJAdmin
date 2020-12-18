@@ -1,0 +1,69 @@
+{% for message in app.flashes('exito') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+{# <table>
+	<thead>
+        <tr>
+            <th>Zonas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in user %}
+            <tr>
+                <td>{{ user }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>#}
+
+
+ <table>
+    <thead>
+        <tr>
+            <th>Iglesias Zona Norte</th>
+            <th>Información</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for norte in norte %}
+            <tr>			
+                <td>{{ norte.iglesia }}</td>
+        </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <th>Iglesias Zona Centro</th>
+            <th>Información</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for centro in centro %}
+            <tr>			
+                <td>{{ centro.iglesia }}</td>
+        </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <th>Iglesias Zona Sur</th>
+            <th>Información</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sur in sur %}
+            <tr>			
+                <td>{{ sur.iglesia }}</td>
+        </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
