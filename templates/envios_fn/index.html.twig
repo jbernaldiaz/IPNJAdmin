@@ -1,2 +1,45 @@
+{% extends "base.html.twig" %}
 
-    {{ dump(envio) }}
+{% block body %}
+<h2> Envios</h2>
+	</div>
+    	<table>
+			<thead>
+				<tr>
+					<th>id</th>
+					<th>Iglesia</th>
+					<th>Fecha</th>
+					<th>mes</th>
+                    <th>Año</th>
+                    <th>operacion</th>
+                    <th>Cajajero</th>
+                    <th>Total</th>
+                    <th>ReportcreateAt</th>
+                    <th>Acciones</th>
+						</tr>
+			</thead>
+			<tbody>
+				{% for envio in envio %}
+
+                <tr>
+                    <td>{{ envio.id }}</td>
+                    <td>{{ envio.user }}</td>
+                    <td>{{ envio.fecha|date('d-m-Y') }}</td>
+                    <td>{{ envio.mes|date('m') }}</td>
+                    <td>{{ envio.anio|date('Y') }}</td>
+                    <td>{{ envio.operacion }}</td>
+                    <td>{{ envio.cajero }}</td>
+                    <td>{{ envio.total }}</td>
+                    <td>{{ envio.createAt|date('d-m-Y  -  H:i') }}</td>
+                     <td class="action">
+					<a href="{{ path('viewEnvio', { id: envio.id }) }}" >Ver</a>
+                            <a>Editar</a>
+                        <a>Excel</a>
+                        
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+		</table>
+	</div>
+{% endblock %}

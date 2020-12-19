@@ -75,4 +75,23 @@ class UserController extends AbstractController
         
         return $this->render('user/add.html.twig', ['form' => $form->createView()]);
     }
+
+
+    /**
+     * @Route("/user/view{id}", name="viewUser")
+     */
+    public function viewAction($id)
+    {
+
+        $repository = $this->getDoctrine()->getRepository(User::class);
+            $user = $repository->find($id);
+
+            return $this->render('user/view.html.twig', [
+                'user' => $user
+                ]);
+        
+       }
+
+
+
 }

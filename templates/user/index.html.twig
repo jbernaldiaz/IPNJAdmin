@@ -1,23 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
 {% for message in app.flashes('exito') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
         {% endfor %}
-{# <table>
-	<thead>
-        <tr>
-            <th>Zonas</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in user %}
-            <tr>
-                <td>{{ user }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>#}
-
 
  <table>
     <thead>
@@ -30,6 +19,8 @@
       {% for norte in norte %}
             <tr>			
                 <td>{{ norte.iglesia }}</td>
+                <td class="action">
+					<a href="{{ path('viewUser', { id: norte.id }) }}" >Ver</a>
         </td>
             </tr>
         {% endfor %}
@@ -46,6 +37,8 @@
         {% for centro in centro %}
             <tr>			
                 <td>{{ centro.iglesia }}</td>
+        <td class="action">
+					<a href="{{ path('viewUser', { id: centro.id }) }}" >Ver</a>
         </td>
             </tr>
         {% endfor %}
@@ -62,8 +55,12 @@
         {% for sur in sur %}
             <tr>			
                 <td>{{ sur.iglesia }}</td>
+        <td class="action">
+					<a href="{{ path('viewUser', { id: sur.id }) }}" >Ver</a>
         </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
+
+{% endblock %}
