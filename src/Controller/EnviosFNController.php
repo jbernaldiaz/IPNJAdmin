@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\EnviosFN;
+use App\Form\EnviosEditType;
+use App\Form\EnviosFNEditType;
 use App\Form\EnviosFNType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,5 +91,65 @@ class EnviosFNController extends AbstractController
                 ]);
         
        }
+
+
+
+
+       /**
+     * @Route("/envios/edit{id}", name="editEnvio")
+     */
+       public function editAction($id)
+       {
+           $em = $this->getDoctrine()->getManager();
+           $envio = $em->getRepository(EnviosFN::class)->find($id);
+           
+           
+           $form = $this->createEditForm($envio);
+           
+           return $this->render('envios_fn/edit.html.twig', array('envio' => $envio, 'form' => $form->createView()));
+           
+       }
+        
+       private function createEditForm(EnviosFN $entity)
+       {
+        $form = $this->createForm(EnviosFNEditType::class, $entity, array(
+            'action' => $this->generateUrl('updateEnvios', array('id' => $entity->getId())), 
+            'method' => 'PUT'));
+        
+        return $form;
+       }
+       
+   
+   
+     /**
+     * @Route("/envios/update{id}", name="updateEnvios")
+     */
+       public function updateAction($id, Request $request)
+       {
+           
+           $em = $this->getDoctrine()->getManager();
+           $envio = $em->getRepository(EnviosFN::class)->find($id);
+           $form = $this->createEditForm($envio);
+           $form->handleRequest($request);
+           
+             
+   
+           if($form->isSubmitted() && $form->isValid())
+           {   
+               $user = $this->getUser();
+               $envio->setUser($user);
+               $em->persist($envio);
+               $em->flush();
+               
+               
+               $this->addFlash('editarEnvio', 'El envio numero ' .$id. ' ha sido modificado con éxito');
+   
+               return $this->redirectToRoute('indexEnvios');
+           }
+   
+           return $this->render('IPNJAdminBundle:Envios:edit.html.twig', array('envio' => $envio, 'form' => $form->createView()));
+       }
+   
+   
 
 }

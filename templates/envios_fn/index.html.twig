@@ -33,7 +33,7 @@
                     <td>{{ envio.createAt|date('d-m-Y  -  H:i') }}</td>
                      <td class="action">
 					<a href="{{ path('viewEnvio', { id: envio.id }) }}" >Ver</a>
-                            <a>Editar</a>
+                            <a href="{{ path('editEnvio', { id: envio.id }) }}">Editar</a>
                         <a>Excel</a>
                         
                         </td>
