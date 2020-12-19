@@ -94,4 +94,89 @@ class UserController extends AbstractController
 
 
 
+
+
+
+
+       /**
+     * @Route("/user/edit{id}", name="editUser")
+     */
+       public function editAction($id)
+       {
+           $em = $this->getDoctrine()->getManager();
+           $user = $em->getRepository(User::class)->find($id);
+
+           
+           $form = $this->createEditForm($user);
+           
+           return $this->render('User/edit.html.twig', array('user' => $user, 'form' => $form->createView()));
+           
+       }
+        
+       private function createEditForm(User $entity)
+       {
+           $form = $this->createForm(UserType::class, $entity, array('action' => $this->generateUrl('updateUser', array('id' => $entity->getId())), 'method' => 'PUT'));
+           
+           return $form;
+       }
+       
+   
+   
+       /**
+     * @Route("/user/update{id}", name="updateUser")
+     */
+       public function updateAction($id, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+       {
+           
+           $em = $this->getDoctrine()->getManager();
+           $user = $em->getRepository(User::class)->find($id);
+           $form = $this->createEditForm($user);
+           $form->handleRequest($request);
+           
+           if($form->isSubmitted() && $form->isValid())
+           {
+               
+   
+           $password = $form->get('password')->getData();
+   
+               if(!empty($password))
+               {
+
+                $user->setPassword($passwordEncoder->encodePassword($user, $form['password']->getData()));
+            
+
+               }
+               else
+               {
+                   $recoverPass = $this->recoverPass($id);
+                   $user->setPassword($recoverPass[0]['password']);                
+               }
+   
+              
+               $em->persist($user);
+               $em->flush();
+               
+               
+               $this->addFlash('men', 'La Iglesia o el Usuario '. $user .' ha sido modificado con éxito');
+   
+   
+               return $this->redirectToRoute('indexUser');
+           }
+   
+           return $this->render('User/edit.html.twig', array('user' => $user, 'form' => $form->createView()));
+       }
+       
+   public function recoverPass($id)
+       {
+           $em = $this->getDoctrine()->getManager();
+           $query = $em->createQuery(
+               'SELECT u.password
+               FROM App\Entity\User u
+               WHERE u.id = :id')->setParameter('id', $id);
+           
+           $currentPass = $query->getResult();
+           
+           return $currentPass;
+       }
+
 }

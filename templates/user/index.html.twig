@@ -21,6 +21,8 @@
                 <td>{{ norte.iglesia }}</td>
                 <td class="action">
 					<a href="{{ path('viewUser', { id: norte.id }) }}" >Ver</a>
+                    
+                     <a href="{{ path('editUser', { id: norte.id }) }}">Editar</a>
         </td>
             </tr>
         {% endfor %}
@@ -39,6 +41,8 @@
                 <td>{{ centro.iglesia }}</td>
         <td class="action">
 					<a href="{{ path('viewUser', { id: centro.id }) }}" >Ver</a>
+                    
+                     <a href="{{ path('editUser', { id: centro.id }) }}">Editar</a>
         </td>
             </tr>
         {% endfor %}
@@ -57,6 +61,7 @@
                 <td>{{ sur.iglesia }}</td>
         <td class="action">
 					<a href="{{ path('viewUser', { id: sur.id }) }}" >Ver</a>
+                     <a href="{{ path('editUser', { id: sur.id }) }}">Editar</a>
         </td>
             </tr>
         {% endfor %}

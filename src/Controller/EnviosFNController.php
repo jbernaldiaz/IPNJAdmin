@@ -147,7 +147,7 @@ class EnviosFNController extends AbstractController
                return $this->redirectToRoute('indexEnvios');
            }
    
-           return $this->render('IPNJAdminBundle:Envios:edit.html.twig', array('envio' => $envio, 'form' => $form->createView()));
+           return $this->render('envios_fn/edit.html.twig', array('envio' => $envio, 'form' => $form->createView()));
        }
    
    
