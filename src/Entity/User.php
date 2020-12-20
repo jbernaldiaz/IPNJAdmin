@@ -198,9 +198,9 @@ class User implements UserInterface
      *
      * @param  boolean  $isActive
      *
-     * @return  self
+     * @return  User
      */ 
-    public function setIsActive(Boolean $isActive)
+    public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
 
@@ -231,5 +231,12 @@ class User implements UserInterface
     {
         return $this->iglesia;
     } 
+
+
+
+    public function isEnabled()
+    {
+       return $this->isActive;
+    }
 
 }
