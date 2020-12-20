@@ -239,4 +239,24 @@ class User implements UserInterface
        return $this->isActive;
     }
 
+
+    /**
+     * Get the value of enviosFN
+     */ 
+    public function getEnviosFN()
+    {
+        return $this->enviosFN;
+    }
+
+    /**
+     * Set the value of enviosFN
+     *
+     * @return  self
+     */ 
+    public function setEnviosFN($enviosFN)
+    {
+        $this->enviosFN = $enviosFN;
+
+        return $this;
+    }
 }

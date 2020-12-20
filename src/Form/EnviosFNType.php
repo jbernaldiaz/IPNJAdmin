@@ -34,14 +34,20 @@ class EnviosFNType extends AbstractType
                     'data-provide' => 'datepicker',
                     'data-date-format' => 'dd-mm-yyyy'
         ]])
-        ->add('mes', DateType::class, [
-            'widget' => 'single_text',
-            //'format' => 'dd-MM-yyyy', 
-            'attr' => [
-                'class' => 'form-control input-inline datepicker',
-                'data-provide' => 'datepicker',
-                'data-date-format' => 'dd-mm-yyyy'
-    ]])
+        ->add('mes', ChoiceType::class, array('choices' => array(
+            'Enero'     => 'Enero' , 
+            'Febrero'   => 'Febrero', 
+            'Marzo'     => 'Marzo', 
+            'Abril'     => 'Abril', 
+            'Mayo'      => 'Mayo', 
+            'Junio'     => 'Junio', 
+            'Julio'     => 'Julio', 
+            'Agosto'    => 'Agosto', 
+            'Septiembre'=> 'Septiembre', 
+            'Octubre'   => 'Octubre', 
+            'Noviembre' => 'Noviembre', 
+            'Diciembre' => 'Diciembre'
+            )))
            // ->add('anio', ChoiceType::class, array('choices' => $this->getYears(2018)))
            ->add('anio', DateType::class, [
                 'widget' => 'single_text',
