@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -197,9 +198,9 @@ class User implements UserInterface
      *
      * @param  boolean  $isActive
      *
-     * @return  self
+     * @return  User
      */ 
-    public function setIsActive(boolean $isActive)
+    public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
 
@@ -231,4 +232,31 @@ class User implements UserInterface
         return $this->iglesia;
     } 
 
+
+
+    public function isEnabled()
+    {
+       return $this->isActive;
+    }
+
+
+    /**
+     * Get the value of enviosFN
+     */ 
+    public function getEnviosFN()
+    {
+        return $this->enviosFN;
+    }
+
+    /**
+     * Set the value of enviosFN
+     *
+     * @return  self
+     */ 
+    public function setEnviosFN($enviosFN)
+    {
+        $this->enviosFN = $enviosFN;
+
+        return $this;
+    }
 }

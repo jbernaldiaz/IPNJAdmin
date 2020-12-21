@@ -1,3 +1,7 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
 {% for message in app.flashes('exito') %}
             <div class="alert alert-success">
                 {{ message }}
@@ -17,3 +21,5 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% endblock %}

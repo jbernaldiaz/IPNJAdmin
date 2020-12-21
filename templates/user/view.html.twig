@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<div>
+	    <h2>Iglesia o Usuario</h2>
+	        <dl>
+	            <dt>Usuario</dt>
+	            <dd>
+	                {{ user.iglesia }}
+	                &nbsp;
+	            </dd>
+	            <br>
+
+	            <dt>Zona</dt>
+	            <dd>
+	                {{ user.zonas }}
+	                &nbsp;
+	            </dd>
+	            <br>
+
+				<dt>Email</dt>
+	            <dd>
+	                {{ user.email }}
+	                &nbsp;
+	            </dd>
+	            <br>
+
+	          <dt>Roles</dt>
+	            <dd>
+                	{% if user.roles == 'ROLE_ADMIN' %}
+						Administrador
+					{% elseif user.roles == 'ROLE_USER' %}
+						Usuario
+					{% elseif user.roles == 'ROLE_SUPER' %}
+						Supervisor
+                	{% endif %}
+	                &nbsp;
+	            </dd>
+	            <br>
+
+	            <dt>{{'Activo'}}</dt>
+	            <dd>
+                	{% if user.isActive == 1 %}
+						<span class="text-success">Habilitado</span>
+					{% elseif user.isActive == 0 %}
+						<span class="text-warning">Deshabilitado</span>
+                	{% endif %}
+	                &nbsp;
+	            </dd>
+	            <br>
+  <br>
+	    <br>         
+	          <br></dl>
+	    </div>
+
+	  {#  <div class="col-md-3">
+	    	<h3>{{ 'Actions'|trans }}:</h3>
+			<p>
+		    	<a href="{{ path('ipnj_iglesias_edit', { id: iglesia.id }) }}" class="btn btn-primary btn-lg btn-block">Editar Usuario </a>
+			</p>
+			<p>
+			    {{ include('IPNJAdminBundle:Iglesias:forms/form.html.twig', { form: delete_form, message: 'Esta seguro?'}) }}
+			</p>
+	    </div>
+	</div>
+	</div>#}
+
+	{% endblock %}

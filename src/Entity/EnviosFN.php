@@ -53,7 +53,8 @@ class EnviosFN
     private $cajero;
 
     /**
-     * @ORM\Column(type="datetime")
+     *
+     * @ORM\Column(name="mes", type="string", columnDefinition="ENUM('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre')")
      */
     private $mes;
 
@@ -167,16 +168,28 @@ class EnviosFN
         return $this;
     }
 
-    public function getMes(): ?\DateTimeInterface
-    {
-        return $this->mes;
-    }
-
-    public function setMes(\DateTimeInterface $mes): self
+ /**
+     * Set mes
+     *
+     * @param string $mes
+     *
+     * @return EnviosFN
+     */
+    public function setMes($mes)
     {
         $this->mes = $mes;
 
         return $this;
+    }
+
+    /**
+     * Get mes
+     *
+     * @return string
+     */
+    public function getMes()
+    {
+        return $this->mes;
     }
 
     public function getAnio(): ?\DateTimeInterface
@@ -343,4 +356,24 @@ class EnviosFN
     }
 
 
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }
