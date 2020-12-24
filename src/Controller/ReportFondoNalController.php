@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\EnviosFN;
+use App\Form\ReporteOfrendasNacionalesType;
+use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReportFondoNalController extends AbstractController
 {
 
-
+/*
     private function getYears($min, $max='current')
     {
          $years = range($min, ($max === 'current' ? date('Y') : $max));
@@ -20,6 +23,16 @@ class ReportFondoNalController extends AbstractController
          return array_combine($years, $years);
     }
 
+    private function ()
+    {
+    
+        $form = $this->createForm(ReporteOfrendasNacionalesType::class);
+
+        return $this->render('report_fondo_nal/report.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+*/
 
     /**
      * @Route("/report/fondo/nal", name="report_fondo_nal")
@@ -27,17 +40,28 @@ class ReportFondoNalController extends AbstractController
     
 
 public function reportAction(Request $request)
-{
-    $form = $this->createFormBuilder()
-        ->add('ofrenda', ChoiceType::class, array('choices' => array(
-            'Misionera'     => 'misionera' , 
-            'Gavillas'   => 'gavillas', 
-            'Rayos'     => 'rayos',
-            'FMN' => 'fmn'
-            )))
-        ->add('anio', ChoiceType::class, array('choices' => $this->getYears(2018, 2025)))
-        ->add('save', SubmitType::class)   
-        ->getForm();
+{   
+       
+    $em = $this->getDoctrine()->getManager();
+    $db = $em->getConnection();
+    $queryAnio = "SELECT DISTINCT anio  FROM envios_fn";
+    $anioStmt = $db->prepare($queryAnio);
+    $paramsAnio = array();
+    $anioStmt->execute($paramsAnio);
+    $aniosResult = $anioStmt->fetchAll(PDO::FETCH_COLUMN);
+
+$arrayResultMap = array();
+
+foreach ($aniosResult as $valor) {
+   $arrayResultMap[$valor] = $valor;
+}
+
+
+$optionAnio = array();
+$optionAnio["aniosResult"] = $aniosResult;
+$optionAnio["arrayResulMap"] = $arrayResultMap;
+
+    $form = $this->createForm(ReporteOfrendasNacionalesType::class, $optionAnio);   
  
     $form->handleRequest($request);
  

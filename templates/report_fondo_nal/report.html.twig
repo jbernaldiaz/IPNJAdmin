@@ -1,6 +1,23 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+{{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+<div>
+			        {{ form_widget(form.ofrenda) }}
+</div>
+<div>
 
-{{ form(form) }}
+						{{ form_widget(form.anio) }}
+</div>
+
+<div>
+
+		        {{ form_widget(form.save, {'label' : 'Buscar', 'attr': {'class': 'btn btn-success'}}) }}
+</div>
+
+		    
+		    	
+               
+        
+                {{ form_end(form) }}
 {% endblock %}

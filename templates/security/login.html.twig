@@ -34,9 +34,20 @@
             </label>
         </div>
     #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
+<div class="g-recaptcha" data-sitekey="6LdlGxMaAAAAAMub6Mx1F8itF_tkVl9yHqrzE1O1" data-callback="onloadCallback"></div>
+    <button id="formSubmit" class="btn btn-lg btn-primary" type="submit" disabled >
         Sign in
     </button>
 </form>
+<script type="text/javascript">
+  var onloadCallback = function() {
+   let formSubmit = document.querySelector("#formSubmit");
+formSubmit.removeAttribute("disabled");
+  console.log(formSubmit)};
+</script>
+<script src="https://www.google.com/recaptcha/api.js?">
+</script>
+
+
+
 {% endblock %}
