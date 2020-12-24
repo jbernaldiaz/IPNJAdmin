@@ -22,19 +22,16 @@ class EnviosFNRepository extends ServiceEntityRepository
     // /**
     //  * @return EnviosFN[] Returns an array of EnviosFN objects
     //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+  
+    public function findByAnio()
+    { 
+        return $this->getEntityManager()
+                  ->createQuery('
+                   SELECT DISTINCT anio  FROM envios_fn'
+        )->getResult();
+
     }
-    */
+   
 
     /*
     public function findOneBySomeField($value): ?EnviosFN

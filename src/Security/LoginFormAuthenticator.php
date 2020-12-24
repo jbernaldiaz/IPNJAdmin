@@ -19,6 +19,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Psr\Log\LoggerInterface;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
@@ -47,10 +48,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function getCredentials(Request $request)
     {
+        
+        
         $credentials = [
             'email' => $request->request->get('email'),
             'password' => $request->request->get('password'),
-            'csrf_token' => $request->request->get('_csrf_token'),
+            'csrf_token' => $request->request->get('_csrf_token'), 
+            'g-recaptcha-response' => $request->request->get('g-recaptcha-response'),
+        
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
@@ -62,6 +67,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
@@ -73,6 +79,39 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
+
+
+
+    //La respuesta del recaptcha
+    $tokenGoogle = $credentials['g-recaptcha-response'] ;
+    //La ip del usuario
+    $ipuser=$_SERVER['REMOTE_ADDR'];
+    //Tu clave secretra de recaptcha
+    $clavesecreta='6LdlGxMaAAAAAIiK6o4BCLvyNzdusjs0EMtA_wjB';
+    //La url preparada para enviar
+    $urlrecaptcha="https://www.google.com/recaptcha/api/siteverify?secret=$clavesecreta&response=$tokenGoogle&remoteip=$ipuser";
+    
+   
+    
+    //Leemos la respuesta (suele funcionar solo en remoto)
+    $respuesta = file_get_contents($urlrecaptcha) ;
+    
+    //Comprobamos el success
+    $dividir=explode('"success":',$respuesta);
+    $obtener=explode(',',$dividir[1]);
+    
+    //Obtenemos el estado
+    $estado=trim($obtener[0]);
+    
+    
+    if ($estado=='true'){
+      //Si es ok
+      echo '-> Ok';
+    } else if ($estado=='false'){
+      //Si es error
+      echo '-> Error';
+    }
+
 
         return $user;
     }
@@ -91,7 +130,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
-    {
+    {  
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
