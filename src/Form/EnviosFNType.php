@@ -50,12 +50,12 @@ class EnviosFNType extends AbstractType
             )))
            // ->add('anio', ChoiceType::class, array('choices' => $this->getYears(2018)))
            ->add('anio', DateType::class, [
-                'widget' => 'single_text',
-                //'format' => 'yyyy', 
-                'attr' => [
-                    'class' => 'form-control input-inline datepicker',
-                    'data-provide' => 'datepicker',
-                    'data-date-format' => 'yyyy',
+            'widget' => 'single_text',
+            'format' => 'yyyy', 
+            'attr' => [
+                'class' => 'form-control input-inline datepicker',
+                'data-provide' => 'datepicker',
+                'data-date-format' => 'yyyy',
                     
         ]])
     
@@ -69,8 +69,7 @@ class EnviosFNType extends AbstractType
             ->add('rayos', IntegerType::class)
             ->add('gavillas', IntegerType::class)
             ->add('fmn', IntegerType::class)
-            ->add('total', IntegerType::class)                    
-            ->add('save', SubmitType::class)
+            ->add('total', IntegerType::class)   
                    
     
         ;

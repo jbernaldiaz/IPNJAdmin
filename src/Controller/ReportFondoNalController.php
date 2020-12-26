@@ -2,37 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\EnviosFN;
 use App\Form\ReporteOfrendasNacionalesType;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReportFondoNalController extends AbstractController
 {
-
-/*
-    private function getYears($min, $max='current')
-    {
-         $years = range($min, ($max === 'current' ? date('Y') : $max));
-
-         return array_combine($years, $years);
-    }
-
-    private function ()
-    {
-    
-        $form = $this->createForm(ReporteOfrendasNacionalesType::class);
-
-        return $this->render('report_fondo_nal/report.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-*/
 
     /**
      * @Route("/report/fondo/nal", name="report_fondo_nal")

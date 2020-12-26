@@ -1,9 +1,16 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+<div class="container-fluid">
+
+
+
 <form method="post">
+
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -19,7 +26,6 @@
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
     <label for="inputPassword">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" required>
-
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
@@ -34,11 +40,19 @@
             </label>
         </div>
     #}
+ <label>ReCaptcha</label>
 <div class="g-recaptcha" data-sitekey="6LdlGxMaAAAAAMub6Mx1F8itF_tkVl9yHqrzE1O1" data-callback="onloadCallback"></div>
     <button id="formSubmit" class="btn btn-lg btn-primary" type="submit" disabled >
-        Sign in
+        Ingresar
     </button>
 </form>
+<div>
+<br /><br /><br />
+<br />
+<br />
+</div>
+</div>
+
 <script type="text/javascript">
   var onloadCallback = function() {
    let formSubmit = document.querySelector("#formSubmit");

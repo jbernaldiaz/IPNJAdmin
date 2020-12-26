@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DatosController
 {
 	/**
-     * @Route("/")
+     * @Route("/datos")
      */
     public function homepage()
     {
