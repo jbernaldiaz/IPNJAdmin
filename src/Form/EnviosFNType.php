@@ -52,7 +52,7 @@ class EnviosFNType extends AbstractType
 
            ->add('anio', DateType::class, [
             'widget' => 'choice',
-            'years' => range(2020,2030,1),
+            'years' => range(date('Y')-1,date('Y')+1,1),
             'attr' => ['data-date-format' => 'yyyy', ] ])
             ->add('operacion', TextType::class)
             ->add('cajero', TextType::class)
@@ -65,10 +65,7 @@ class EnviosFNType extends AbstractType
             ->add('gavillas', IntegerType::class)
             ->add('fmn', IntegerType::class)
             ->add('total', IntegerType::class)  
-            ->add('save', ButtonType::class, array(
-                'attr' => array(
-                        'onclick' => 'confirmAdd()'
-                ))) 
+            
                    
     
         ;

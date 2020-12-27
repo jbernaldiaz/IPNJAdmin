@@ -3,14 +3,13 @@
 {% block body %}
 
     {{ parent() }}
-
-{{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+<div class="main container">
+		<div class="row well">
+			{{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
 				<div class="page-header">
 					<h2>Formulario de Envio de Detalles</h2>
-				</div>
-                
-                <div class="col-md-3">
-
+				</div>           
+            <div class="col-md-3">
 			    <div class="form-group">                    
 			        {{ form_widget(form.anio['day'],{'attr':{'style':'display:none'}}) }}
                     {{ form_widget(form.anio['month'],{'attr':{'style':'display:none'}}) }}
@@ -23,8 +22,8 @@
 			        {{ form_widget(form.mes, {'attr': {'class': 'form-control'}}) }}
 			        <span class="text-danger">{{ form_errors(form.mes) }}</span>
 			    </div>
-</div>
-<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
 			    <div class="form-group">
 			        {{ form_label(form.fecha) }}
 			        {{ form_widget(form.fecha)}}
@@ -42,8 +41,8 @@
 			        {{ form_widget(form.cajero, {'attr': {'class': 'form-control'}}) }}
 			        <span class="text-danger">{{ form_errors(form.cajero) }}</span>
 			    </div>
-</div>
-<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
 			    <div class="form-group">
 			        {{ form_label(form.dDiezmo) }}
 			        {{ form_widget(form.dDiezmo, {'attr': {'class': 'form-control'}}) }}
@@ -62,12 +61,11 @@
 			    <div class="form-group">
 			        {{ form_label(form.diezmoPersonal) }}
 			        {{ form_widget(form.diezmoPersonal, {'attr': {'class': 'form-control'}}) }}
-			        <span class="text-danger">{{ form_errors(form.diezmoPersonal) }}</span>
-			        
+			        <span class="text-danger">{{ form_errors(form.diezmoPersonal) }}</span>       
 			    </div>
 			    
-</div>
-<div class="col-md-3">
+			</div>
+			<div class="col-md-3">
 			    <div class="form-group">
 			        {{ form_label(form.misionera) }}
 			        {{ form_widget(form.misionera, {'attr': {'class': 'form-control'}}) }}
@@ -88,23 +86,25 @@
 			        {{ form_widget(form.fmn, {'attr': {'class': 'form-control'}}) }}
 			        <span class="text-danger">{{ form_errors(form.fmn) }}</span>
 			    </div>
-
-<div class="form-group">
+				<div class="form-group">
 			        {{ form_label(form.total) }}
 			        {{ form_widget(form.total, {'attr': {'class': 'form-control'}}) }}
 			        <span class="text-danger">{{ form_errors(form.total) }}</span><p><br /><br /></p>
 			    </div>
-
-			    
-</div>
+   			</div>
 		    <center>
-		    	<p><br />
-		        {{ form_widget(form.save, {'label' : 'Enviar Detalle', 'attr': {'class': 'btn btn-success'}}) }}
-		    </p></center> 
+		    	<label>ReCaptcha</label>
+					<div class="g-recaptcha" data-sitekey="6LdlGxMaAAAAAMub6Mx1F8itF_tkVl9yHqrzE1O1" data-callback="onloadCallback">
+					</div>
+					<button id="formSubmit" class="btn btn-lg btn-primary" type="submit" disabled >
+						Enviar Detalles
+					</button>
+			</center> 
                
         
-                {{ form_end(form) }}
-
+        {{ form_end(form) }}
+	</div>
+</div>
 
 
 <script type="text/javascript">
@@ -123,7 +123,7 @@ formSubmit.removeAttribute("disabled");
         bootbox.confirm(message, function(result) {
             if(result == true)
             {
-                $('form')[0].submit();
+                $('form')[0].formSubmit();
             }else{
             	$('form')[0];
             }

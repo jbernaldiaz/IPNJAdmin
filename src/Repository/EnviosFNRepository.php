@@ -23,11 +23,11 @@ class EnviosFNRepository extends ServiceEntityRepository
     //  * @return EnviosFN[] Returns an array of EnviosFN objects
     //  */
   
-    public function findByAnio()
-    { 
+    public function encontrarPorZonas()
+    {
+
         return $this->getEntityManager()
-                  ->createQuery('
-                   SELECT DISTINCT anio  FROM envios_fn'
+                  ->createQuery(""
         )->getResult();
 
     }
