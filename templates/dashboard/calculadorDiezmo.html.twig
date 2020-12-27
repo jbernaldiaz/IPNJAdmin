@@ -16,13 +16,14 @@
 			    </div>
 
 			    <div class="form-group">
-			        {{ form_label(form.local) }}
+				{{ form_label(form.local, 'Digite el porcentaje que aporta al Fondo Local') }}
 			        {{ form_widget(form.local, {'attr': {'class': 'form-control'}}) }}
+					
 			        <span class="text-danger">{{ form_errors(form.local) }}</span>
 			    </div>
     			
     			<div class="form-group">
-			        {{ form_label(form.cuota) }}
+			        {{ form_label(form.cuota, 'Digite el valor en pesos de su cuota de socio') }}
 			        {{ form_widget(form.cuota, {'attr': {'class': 'form-control'}}) }}
 			        <span class="text-danger">{{ form_errors(form.cuota) }}</span>
 			    </div>
