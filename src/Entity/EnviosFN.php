@@ -54,7 +54,7 @@ class EnviosFN
 
     /**
      *
-     * @ORM\Column(name="mes", type="string", columnDefinition="ENUM('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre')")
+     * @ORM\Column(type="string", length=50)
      */
     private $mes;
 

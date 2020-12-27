@@ -1,19 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     {{ parent() }}
-	<div class="main container">
-		<div class="row well">
-			{{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+
+{{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
 				<div class="page-header">
 					<h2>Formulario de Envio de Detalles</h2>
 				</div>
                 
                 <div class="col-md-3">
 
-			    <div class="form-group">
-			        {{ form_label(form.anio) }}
-			        {{ form_widget(form.anio, {'attr': {'class': 'form-control'}}) }}
+			    <div class="form-group">                    
+			        {{ form_widget(form.anio['day'],{'attr':{'style':'display:none'}}) }}
+                    {{ form_widget(form.anio['month'],{'attr':{'style':'display:none'}}) }}
+                    {{ form_label(form.anio) }}{{ form_widget(form.anio['year'], {'attr': {'class': 'form-control'}}) }}</td></tr>
 			        <span class="text-danger">{{ form_errors(form.anio) }}</span>
 			    </div>
 
@@ -96,20 +97,14 @@
 
 			    
 </div>
-
- 
 		    <center>
-            <label>ReCaptcha</label>
-<div class="g-recaptcha" data-sitekey="6LdlGxMaAAAAAMub6Mx1F8itF_tkVl9yHqrzE1O1" data-callback="onloadCallback"></div>
-   
 		    	<p><br />
-		       <button id="formSubmit" class="btn btn-lg btn-primary" type="submit" disabled >
-        Enviar Detalle
-    </button>
-    	    </p></center> 
+		        {{ form_widget(form.save, {'label' : 'Enviar Detalle', 'attr': {'class': 'btn btn-success'}}) }}
+		    </p></center> 
                
         
                 {{ form_end(form) }}
+
 
 
 <script type="text/javascript">
