@@ -59,7 +59,7 @@ class EnviosFN
     private $mes;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $anio;
 
@@ -192,17 +192,7 @@ class EnviosFN
         return $this->mes;
     }
 
-    public function getAnio(): ?\DateTimeInterface
-    {
-        return $this->anio;
-    }
 
-    public function setAnio(\DateTimeInterface $anio): self
-    {
-        $this->anio = $anio;
-
-        return $this;
-    }
 
     public function getCreateAt(): ?\DateTimeInterface
     {
@@ -373,6 +363,27 @@ class EnviosFN
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of anio
+     */ 
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
+    /**
+     * Set the value of anio
+     *
+     * @return  self
+     */ 
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
 
         return $this;
     }
