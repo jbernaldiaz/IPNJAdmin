@@ -369,22 +369,27 @@ class EnviosFN
 
 
     /**
-     * Get the value of anio
-     */ 
-    public function getAnio()
-    {
-        return $this->anio;
-    }
-
-    /**
-     * Set the value of anio
+     * Set anio
      *
-     * @return  self
-     */ 
+     * @param \Date $anio
+     *
+     * @return EnviosFN
+     */
     public function setAnio($anio)
     {
         $this->anio = $anio;
 
         return $this;
     }
+
+    /**
+     * Get anio
+     *
+     * @return \Date
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
 }
