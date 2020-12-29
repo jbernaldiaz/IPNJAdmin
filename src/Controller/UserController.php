@@ -135,21 +135,20 @@ class UserController extends AbstractController
            
            if($form->isSubmitted() && $form->isValid())
            {
-               
-   
-           $password = $form->get('password')->getData();
-   
+            $password = $form->get('password')->getData();
+           
                if(!empty($password))
                {
 
                 $user->setPassword($passwordEncoder->encodePassword($user, $form['password']->getData()));
-            
+             
 
                }
                else
                {
                    $recoverPass = $this->recoverPass($id);
-                   $user->setPassword($recoverPass[0]['password']);                
+                    $user->setPassword($recoverPass[0]['password']);  
+                                
                }
    
               
@@ -170,11 +169,13 @@ class UserController extends AbstractController
        {
            $em = $this->getDoctrine()->getManager();
            $query = $em->createQuery(
-               'SELECT u.password
-               FROM App:User u
-               WHERE u.id = :id')->setParameter('id', $id);
+               'SELECT U.password
+               FROM App\Entity\User U
+               WHERE U.id = :id')
+               ->setParameter('id', $id);
            
            $currentPass = $query->getResult();
+
            
            return $currentPass;
        }

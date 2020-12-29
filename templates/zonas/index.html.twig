@@ -1,25 +1,42 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
+{{ parent() }}
 {% for message in app.flashes('exito') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
         {% endfor %}
-<table>
-	<thead>
-        <tr>
-            <th>Zonas</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for zona in zona %}
-            <tr>
-                <td>{{ zona }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
+		<div class="container">
+			<div class="row well">
+				<div class="page-header margin-none" >	
+					<h2 class="padding-none" style="float:left;"> Zonas o Distritos</h2>
+				</div>
+				<div class="col-md-3">
+					<div class="table-responsive">
+						<div class="table-responsive">
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Zonas</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for zona in zona %}
+										<tr>
+											<td>{{ zona }}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+				
+							<a href="{{ path('addZona') }}" class="btn btn-sm btn-info">Agregar Zona</a>
+							<a href="{{ path('dashboard') }}" class="btn btn-sm btn-info">Regresar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 {% endblock %}
