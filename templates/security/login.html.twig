@@ -8,6 +8,12 @@
 
 {% block body %}
 
+           
+<div class="container col-md-4 offset-md-4">
+    <div class="row well">
+    <center> <img src="{{asset('images/logoIPNJ.png') }}" alt="IPNJHeader" height="150"/>
+        </center>
+        <div>
             <form method="post">
 
                 {% if error %}
@@ -38,12 +44,19 @@
                         </div>
                     #}
                 <label class="text-white"><b>ReCaptcha</b></label>
-                <div class="g-recaptcha" data-sitekey="6LdlGxMaAAAAAMub6Mx1F8itF_tkVl9yHqrzE1O1" data-callback="onloadCallback"></div>
-                    <button id="formSubmit" class="btn btn-lg btn-primary" type="submit" disabled >
-                        Ingresar
-                    </button>
+                <center>
+                    <div class="g-recaptcha" data-sitekey="6LdlGxMaAAAAAMub6Mx1F8itF_tkVl9yHqrzE1O1" data-callback="onloadCallback"></div>
+                        <button id="formSubmit" class="btn btn-lg btn-primary" type="submit" disabled >
+                            Ingresar
+                        </button>
+                <center>
             </form>
-
+        </div>
+    </div>
+</div> 
+<br />
+<br />
+<br /> 
 
 
 <script type="text/javascript">
