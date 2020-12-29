@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -64,6 +65,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\EnviosFN", mappedBy="user")
      */
     private $enviosFN;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EnviosAS", mappedBy="user")
+     */
+    private $enviosAS;
 
 
     
@@ -256,6 +262,26 @@ class User implements UserInterface
     public function setEnviosFN($enviosFN)
     {
         $this->enviosFN = $enviosFN;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of enviosAS
+     */ 
+    public function getEnviosAS()
+    {
+        return $this->enviosAS;
+    }
+
+    /**
+     * Set the value of enviosAS
+     *
+     * @return  self
+     */ 
+    public function setEnviosAS($enviosAS)
+    {
+        $this->enviosAS = $enviosAS;
 
         return $this;
     }

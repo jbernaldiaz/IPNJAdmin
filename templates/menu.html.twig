@@ -16,28 +16,13 @@
             <ul class="nav navbar-nav">
                 {% if is_granted('ROLE_SUPER') %}
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  Envios   <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  <b>Consultar Envios</b>   <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('addEnvios') }}">  Envios T. Nacional  </a></li>
-                        <li><a href="">  Envios A. Social  </a></li>
+                        <li><a href="{{ path('consultaFN_super') }}">  Envios T. Nacional  </a></li>
+                        <li><a href="{{ path('consultaAS_super') }}">  Envios A. Social  </a></li>
                       </ul>
 
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  Usuarios   <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('indexUser') }}">  Iglesias y pastores</a></li>
-                        
-                    </ul>
-                </li>   
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  Zonas   <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ path('indexZona') }}">  Lista de Zonas  </a></li>
-                        
-                    </ul>
-                </li>  
-                
+                </li>                
                {% endif %}
                {% if is_granted('ROLE_ADMIN') %}
                 <li class="dropdown">
@@ -71,19 +56,19 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  ENVIOS   <span class="caret"></span></a>
 
                 <ul class="dropdown-menu">
-                    <li><a href="{{ path('consulta_fnacional_user') }}"> Mis Envios T. Nacional </a></li>
-                    <li><a href=""> Mis Envios A. Social </a></li>
+                    <li><a href="{{ path('consultaFN_user') }}"> Mis Envios T. Nacional </a></li>
+                    <li><a href="{{ path('consultaAS_user') }}"> Mis Envios A. Social </a></li>
                 </ul>
             </li>
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  HACER ENVIOS   <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                      <li><a href="{{ path('addEnvios') }}">  Tesoreria Nacional  </a></li>
-                     <li><a href="">  Asistencia Social  </a></li>
+                     <li><a href="{{ path('addEnviosAS') }}">  Asistencia Social  </a></li>
 
                  </ul>
              </li>
-                    <li><a href="">  Calculador  </a></li>
+                    <li><a href="{{ path('calDiezmos') }}">  Calculador  </a></li>
 
                 {% endif %}
             </ul>
