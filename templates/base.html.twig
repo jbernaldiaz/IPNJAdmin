@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <meta charset="UTF-8" />
+        <title>{% block title %}IPNJ Administrator{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}" />
+            <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+            <link rel="stylesheet" href="{{ asset('css/Footer-with-button-logo.css') }}">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-    <h2> Usuario Logeado {{ app.user }} </h2>
-        {% block body %} 
         
-        {% endblock %}
-        {% block javascripts %}{% endblock %}
+  
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <img src="{{asset('images/logo1.png') }}" alt="IPNJHeader" height="130"/>
+            {% block menu %}
+                {{ include('menu.html.twig') }}
+        
+             {% endblock %}
 
+        {% endif %}
+
+        {% block body %}
+           
+        {% endblock %}
+        
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% block footer %}
+         {{ include('footer.html.twig') }}
+            
+               
+            
+        {% endblock %}
+        {% endif %}
+        {% block javascripts %}
+            <script src="{{ asset('js/jquery-1.11.3.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('js/bootbox.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        {% endblock %}
     </body>
+    
 </html>

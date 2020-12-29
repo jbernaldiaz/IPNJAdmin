@@ -5,10 +5,13 @@ namespace App\Form;
 use App\Entity\EnviosFN;
 use App\Entity\User;
 use App\Entity\Zonas;
+use DateTime;
+use Doctrine\DBAL\Types\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType as TypeDateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,19 +25,17 @@ class EnviosFNType extends AbstractType
     {
         $builder
             
-
-
-
-
-            ->add('fecha', DateType::class, [
-                'widget' => 'single_text',
-                //'format' => 'dd-MM-yyyy', 
-                'attr' => [
-                    'class' => 'form-control input-inline datepicker',
-                    'data-provide' => 'datepicker',
-                    'data-date-format' => 'dd-mm-yyyy'
-        ]])
-        ->add('mes', ChoiceType::class, array('choices' => array(
+        ->add('fecha', DateType::class, [
+            'widget' => 'single_text',
+            'format' => 'dd-MM-yyyy', 
+            'html5' => false,
+            'attr' => [
+                'class' => 'form-control input-inline datepicker',
+                'data-provide' => 'datepicker',
+                'data-date-format' => 'dd-mm-yyyy'
+    ]])
+                    
+       ->add('mes', ChoiceType::class, array('choices' => array(
             'Enero'     => 'Enero' , 
             'Febrero'   => 'Febrero', 
             'Marzo'     => 'Marzo', 
@@ -48,17 +49,11 @@ class EnviosFNType extends AbstractType
             'Noviembre' => 'Noviembre', 
             'Diciembre' => 'Diciembre'
             )))
-           // ->add('anio', ChoiceType::class, array('choices' => $this->getYears(2018)))
+
            ->add('anio', DateType::class, [
-                'widget' => 'single_text',
-                //'format' => 'yyyy', 
-                'attr' => [
-                    'class' => 'form-control input-inline datepicker',
-                    'data-provide' => 'datepicker',
-                    'data-date-format' => 'yyyy',
-                    
-        ]])
-    
+            'widget' => 'choice',
+            'years' => range(date('Y')-1,date('Y')+1,1),
+            'attr' => ['data-date-format' => 'yyyy', ] ])
             ->add('operacion', TextType::class)
             ->add('cajero', TextType::class)
             ->add('dDiezmo', IntegerType::class)
@@ -69,8 +64,8 @@ class EnviosFNType extends AbstractType
             ->add('rayos', IntegerType::class)
             ->add('gavillas', IntegerType::class)
             ->add('fmn', IntegerType::class)
-            ->add('total', IntegerType::class)                    
-            ->add('save', SubmitType::class)
+            ->add('total', IntegerType::class)  
+            
                    
     
         ;
@@ -82,4 +77,5 @@ class EnviosFNType extends AbstractType
             'data_class' => EnviosFN::class,
         ]);
     }
+    
 }

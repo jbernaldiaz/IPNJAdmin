@@ -33,6 +33,9 @@ class EnviosFNController extends AbstractController
      */
     public function addAction()
     {
+
+    
+
         $envios = new EnviosFN();
         $form = $this->createCreateForm($envios);
         
@@ -55,10 +58,48 @@ class EnviosFNController extends AbstractController
      */
     public function createAction(Request $request)
     {
+
+        $captcha = [
+            'g-recaptcha-response' => $request->request->get('g-recaptcha-response'),
+        
+        ];
+
+     
+        //La respuesta del recaptcha
+        $tokenGoogle = $captcha['g-recaptcha-response'] ;
+        //La ip del usuario
+        $ipuser=$_SERVER['REMOTE_ADDR'];
+        //Tu clave secretra de recaptcha
+        $clavesecreta='6LdlGxMaAAAAAIiK6o4BCLvyNzdusjs0EMtA_wjB';
+        //La url preparada para enviar
+        $urlrecaptcha="https://www.google.com/recaptcha/api/siteverify?secret=$clavesecreta&response=$tokenGoogle&remoteip=$ipuser";
+        
+       
+        
+        //Leemos la respuesta (suele funcionar solo en remoto)
+        $respuesta = file_get_contents($urlrecaptcha) ;
+        
+        //Comprobamos el success
+        $dividir=explode('"success":',$respuesta);
+        $obtener=explode(',',$dividir[1]);
+        
+        //Obtenemos el estado
+        $estado=trim($obtener[0]);
+        
+        
+        if ($estado=='true'){
+          //Si es ok
+          echo '-> Ok';
+        } else if ($estado=='false'){
+          //Si es error
+          echo '-> Error';
+        }
+
         $envios = new EnviosFN();
         $form = $this->createCreateForm($envios);
         $form->handleRequest($request);
         
+
        if ($form->isSubmitted() && $form->isValid())
         {
             $user = $this->getUser();
@@ -136,8 +177,7 @@ class EnviosFNController extends AbstractController
    
            if($form->isSubmitted() && $form->isValid())
            {   
-               $user = $this->getUser();
-               $envio->setUser($user);
+               
                $em->persist($envio);
                $em->flush();
                

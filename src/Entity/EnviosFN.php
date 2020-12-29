@@ -54,12 +54,12 @@ class EnviosFN
 
     /**
      *
-     * @ORM\Column(name="mes", type="string", columnDefinition="ENUM('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre')")
+     * @ORM\Column(type="string", length=50)
      */
     private $mes;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $anio;
 
@@ -192,17 +192,7 @@ class EnviosFN
         return $this->mes;
     }
 
-    public function getAnio(): ?\DateTimeInterface
-    {
-        return $this->anio;
-    }
 
-    public function setAnio(\DateTimeInterface $anio): self
-    {
-        $this->anio = $anio;
-
-        return $this;
-    }
 
     public function getCreateAt(): ?\DateTimeInterface
     {
@@ -376,4 +366,30 @@ class EnviosFN
 
         return $this;
     }
+
+
+    /**
+     * Set anio
+     *
+     * @param \Date $anio
+     *
+     * @return EnviosFN
+     */
+    public function setAnio($anio)
+    {
+        $this->anio = $anio;
+
+        return $this;
+    }
+
+    /**
+     * Get anio
+     *
+     * @return \Date
+     */
+    public function getAnio()
+    {
+        return $this->anio;
+    }
+
 }

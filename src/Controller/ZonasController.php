@@ -29,7 +29,7 @@ class ZonasController extends AbstractController
     /**
      * @Route("/zonas/add", name="addZona")
      */
-    public function addAction()
+    public function addZonaAction()
     {
         $zona = new Zonas();
         $form = $this->createCreateForm($zona);
@@ -40,7 +40,7 @@ class ZonasController extends AbstractController
     private function createCreateForm(Zonas $entity)
     {
         $form = $this->createForm(ZonasType::class, $entity, array(
-            'action' => $this->generateUrl('create'),
+            'action' => $this->generateUrl('createZona'),
             'method' => 'POST'
         ));
         
@@ -51,7 +51,7 @@ class ZonasController extends AbstractController
     /**
      * @Route("/zonas/create", name="createZona")
      */
-    public function createAction(Request $request)
+    public function createZonaAction(Request $request)
     {
         $zona = new Zonas();
         $form = $this->createCreateForm($zona);

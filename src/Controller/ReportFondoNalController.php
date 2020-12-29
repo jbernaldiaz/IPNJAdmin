@@ -2,37 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\EnviosFN;
 use App\Form\ReporteOfrendasNacionalesType;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReportFondoNalController extends AbstractController
 {
-
-/*
-    private function getYears($min, $max='current')
-    {
-         $years = range($min, ($max === 'current' ? date('Y') : $max));
-
-         return array_combine($years, $years);
-    }
-
-    private function ()
-    {
-    
-        $form = $this->createForm(ReporteOfrendasNacionalesType::class);
-
-        return $this->render('report_fondo_nal/report.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-*/
 
     /**
      * @Route("/report/fondo/nal", name="report_fondo_nal")
@@ -44,7 +21,7 @@ public function reportAction(Request $request)
        
     $em = $this->getDoctrine()->getManager();
     $db = $em->getConnection();
-    $queryAnio = "SELECT DISTINCT anio  FROM envios_fn";
+    $queryAnio = "SELECT DISTINCT YEAR(anio)  FROM envios_fn";
     $anioStmt = $db->prepare($queryAnio);
     $paramsAnio = array();
     $anioStmt->execute($paramsAnio);
@@ -60,6 +37,7 @@ foreach ($aniosResult as $valor) {
 $optionAnio = array();
 $optionAnio["aniosResult"] = $aniosResult;
 $optionAnio["arrayResulMap"] = $arrayResultMap;
+
 
     $form = $this->createForm(ReporteOfrendasNacionalesType::class, $optionAnio);   
  
@@ -92,7 +70,7 @@ $concat = "GROUP_CONCAT(if(mes = 'Enero'," . $ofrenda . ", NULL)) as 'a',
     FROM envios_fn E 
     INNER JOIN user I ON I.id = E.user_id
     INNER JOIN zonas U ON U.id = I.zonas_id
-    WHERE anio = " . $anio . " AND U.id = '1'
+    WHERE YEAR(anio) = " . $anio . " AND U.id = '1'
     GROUP BY user_id";
     $stmt = $db->prepare($query);
     $params = array();
@@ -102,6 +80,7 @@ if($ofrenda === 'misionera'){
 
     $enviosMisioNorte = $stmt->fetchAll();
     $enviosNorte = $enviosMisioNorte;
+    $ofrendas = 'Misionera';
 
 }
 
@@ -109,12 +88,14 @@ if($ofrenda === 'gavillas'){
 
     $enviosGavillasNorte = $stmt->fetchAll();
     $enviosNorte = $enviosGavillasNorte;
+    $ofrendas = 'Gavillas';
 
 } 
 if($ofrenda === 'rayos'){
 
     $enviosRayosNorte = $stmt->fetchAll();
         $enviosNorte = $enviosRayosNorte;
+        $ofrendas = 'Rayos';
 
 }     
 
@@ -122,13 +103,22 @@ if($ofrenda === 'fmn'){
 
     $enviosFmnNorte = $stmt->fetchAll();
         $enviosNorte = $enviosFmnNorte;
+        $ofrendas = 'Fmn';
  }
-    
+
+ if($ofrenda === 'd_diezmo'){
+
+    $enviosDiezmoNorte = $stmt->fetchAll();
+    $enviosNorte = $enviosDiezmoNorte;
+    $ofrendas = 'Diezmo de diezmo';
+
+}   
+
  $query = "SELECT I.iglesia, " .$concat. "
  FROM envios_fn E 
  INNER JOIN user I ON I.id = E.user_id
  INNER JOIN zonas U ON U.id = I.zonas_id
- WHERE anio = " . $anio . " AND U.id = '2'
+ WHERE YEAR(anio) = " . $anio . " AND U.id = '2'
  GROUP BY user_id";
     $stmtCentro = $db->prepare($query);
     $params = array();
@@ -156,12 +146,17 @@ if($ofrenda === 'fmn'){
             $enviosCentro = $enviosFmnCentro;
     
     }       
+    if($ofrenda === 'd_diezmo'){
+
+        $enviosDiezmoCentro = $stmt->fetchAll();
+        $enviosCentro = $enviosDiezmoCentro;
     
+    }  
     $query = "SELECT I.iglesia, " .$concat. "
     FROM envios_fn E 
     INNER JOIN user I ON I.id = E.user_id
     INNER JOIN zonas U ON U.id = I.zonas_id
-    WHERE anio = " . $anio . " AND U.id = '3'
+    WHERE YEAR(anio) = " . $anio . " AND U.id = '3'
     GROUP BY user_id";
     $stmtSur = $db->prepare($query);
     $params = array();
@@ -193,7 +188,13 @@ if($ofrenda === 'fmn'){
             $enviosSur = $enviosFmnSur;
             $ofrendas = 'Fmn';
  }    
+ if($ofrenda === 'd_diezmo'){
 
+    $enviosDiezmoSur = $stmt->fetchAll();
+    $enviosSur = $enviosDiezmoSur;
+    $ofrendas = 'Diezmo de Diezmo';
+
+}
  return $this->render('report_fondo_nal/index.html.twig', array(
      'ofrendas' => $ofrendas, 
      'ofrenda' => $ofrenda, 

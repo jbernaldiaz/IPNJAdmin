@@ -24,7 +24,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -35,5 +35,24 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        
+          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+          - { path: ^/dashboard, roles: [ROLE_USER, ROLE_SUPER, ROLE_ADMIN] }
+          - { path: ^/user/index, roles: [ROLE_ADMIN] }
+          - { path: ^/user/view, roles: [ROLE_ADMIN] }
+          - { path: ^/user/edit, roles: [ROLE_ADMIN] }
+          - { path: ^/user/update, roles: [ROLE_ADMIN] }
+          - { path: ^/zonas/index, roles: [ROLE_ADMIN] }
+          - { path: ^/zonas/add, roles: [ROLE_ADMIN] }
+          - { path: ^/envios/index, roles: [ROLE_ADMIN] }
+          - { path: ^/envios/edit, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios/update, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios/view, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios/add, roles: [ROLE_USER] }
+          - { path: ^/report/fondo/nal, roles: [ROLE_ADMIN] }
+          - { path: ^/consulta_fnacional/user, roles: [ROLE_USER] }
+          - { path: ^/consulta_fnacional/admin, roles: [ROLE_ADMIN] }
+
+
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
