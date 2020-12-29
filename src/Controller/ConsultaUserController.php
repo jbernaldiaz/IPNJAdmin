@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\EnviosAS;
 use App\Entity\EnviosFN;
+use App\Form\ReportASType;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -93,4 +95,143 @@ class ConsultaUserController extends AbstractController
           return $this->render('consulta_user/consultaASSuper.html.twig', array('zonaUser' => $zonaUser, 'user' => $user,'envio' => $envio));
       }
     
+    /**
+     * @Route("/report/asistencia", name="report_as")
+     */
+    public function reportAsistenciaAction(Request $request)
+      {   
+            
+        $em = $this->getDoctrine()->getManager();
+        $db = $em->getConnection();
+        $queryAnio = "SELECT DISTINCT YEAR(anio)  FROM envios_fn";
+        $anioStmt = $db->prepare($queryAnio);
+        $paramsAnio = array();
+        $anioStmt->execute($paramsAnio);
+        $aniosResult = $anioStmt->fetchAll(PDO::FETCH_COLUMN);
+
+        $arrayResultMap = array();
+
+        foreach ($aniosResult as $valor) {
+          $arrayResultMap[$valor] = $valor;
+        }
+
+
+      $optionAnio = array();
+      $optionAnio["aniosResult"] = $aniosResult;
+      $optionAnio["arrayResulMap"] = $arrayResultMap;
+
+
+          $form = $this->createForm(ReportASType::class, $optionAnio);   
+      
+          $form->handleRequest($request);
+      
+          if ($form->isSubmitted() && $form->isValid()) { 
+
+
+          $aporte = $form->get("aporte")->getData();
+          $anio = $form->get("anio")->getData();
+          
+
+          $em = $this->getDoctrine()->getManager();
+          $db = $em->getConnection();
+
+      $concat = "GROUP_CONCAT(if(mes = 'Enero'," . $aporte . ", NULL)) as 'a',
+          GROUP_CONCAT(if(mes = 'Febrero', " . $aporte . ", NULL)) as 'b', 
+          GROUP_CONCAT(if(mes = 'Marzo'," . $aporte . ", NULL)) as 'c',
+          GROUP_CONCAT(if(mes = 'Abril'," . $aporte . ", NULL)) as 'd',
+          GROUP_CONCAT(if(mes = 'Mayo'," . $aporte . ", NULL)) as 'e',
+          GROUP_CONCAT(if(mes = 'Junio'," . $aporte . ", NULL)) as 'f',
+          GROUP_CONCAT(if(mes = 'Julio'," . $aporte . ", NULL)) as 'g',
+          GROUP_CONCAT(if(mes = 'Agosto'," . $aporte . ", NULL)) as 'h',
+          GROUP_CONCAT(if(mes = 'Septiembre'," . $aporte . ", NULL)) as 'i',
+          GROUP_CONCAT(if(mes = 'Octubre'," . $aporte . ", NULL)) as 'j',
+          GROUP_CONCAT(if(mes = 'Noviembre'," . $aporte . ", NULL)) as 'k',
+          GROUP_CONCAT(if(mes = 'Diciembre'," . $aporte . ", NULL)) as 'l'";
+
+          $query = "SELECT I.iglesia, " .$concat. "
+          FROM envios_as E 
+          INNER JOIN user I ON I.id = E.user_id
+          INNER JOIN zonas U ON U.id = I.zonas_id
+          WHERE YEAR(anio) = " . $anio . " AND U.id = '1'
+          GROUP BY user_id";
+          $stmt = $db->prepare($query);
+          $params = array();
+          $stmt->execute($params);
+
+      if($aporte === 'aporte_a'){
+
+          $enviosMisioNorte = $stmt->fetchAll();
+          $enviosNorte = $enviosMisioNorte;
+          $aportes = 'Aporte Voluntario 1';
+
+      }
+
+      if($aporte === 'aporte_b'){
+
+          $enviosGavillasNorte = $stmt->fetchAll();
+          $enviosNorte = $enviosGavillasNorte;
+          $aportes = 'Aporte Voluntario 2';
+
+      } 
+
+      $query = "SELECT I.iglesia, " .$concat. "
+      FROM envios_as E 
+      INNER JOIN user I ON I.id = E.user_id
+      INNER JOIN zonas U ON U.id = I.zonas_id
+      WHERE YEAR(anio) = " . $anio . " AND U.id = '2'
+      GROUP BY user_id";
+          $stmtCentro = $db->prepare($query);
+          $params = array();
+          $stmtCentro->execute($params);
+
+          if($aporte === 'aporte_a'){
+
+              $enviosMisioCentro = $stmtCentro->fetchAll();
+              $enviosCentro = $enviosMisioCentro;
+          }
+          if($aporte === 'aporte_b'){
+          
+              $enviosGavillasCentro = $stmtCentro->fetchAll();
+              $enviosCentro = $enviosGavillasCentro;
+          } 
+            
+          $query = "SELECT I.iglesia, " .$concat. "
+          FROM envios_as E 
+          INNER JOIN user I ON I.id = E.user_id
+          INNER JOIN zonas U ON U.id = I.zonas_id
+          WHERE YEAR(anio) = " . $anio . " AND U.id = '3'
+          GROUP BY user_id";
+          $stmtSur = $db->prepare($query);
+          $params = array();
+          $stmtSur->execute($params);
+
+
+          if($aporte === 'aporte_a'){
+
+              $enviosMisioSur = $stmtSur->fetchAll();
+              $enviosSur = $enviosMisioSur;
+              $aportes = 'Aporte Voluntario 1';
+          }
+          if($aporte === 'aporte_b'){
+          
+              $enviosGavillasSur = $stmtSur->fetchAll();
+              $enviosSur = $enviosGavillasSur;
+              $aportes = 'Aporte Voluntario 2';
+          
+          } 
+
+      return $this->render('consulta_user/report_as.html.twig', array(
+          'aportes' => $aportes, 
+          'aporte' => $aporte, 
+          'anio' => $anio, 
+          'enviosNorte' => $enviosNorte,
+          'enviosCentro' => $enviosCentro, 
+          'enviosSur' => $enviosSur
+      ));
+          
+      }
+ 
+     return $this->render('consulta_user/report.html.twig', array('form' => $form->createView()));
+}
+
 }
