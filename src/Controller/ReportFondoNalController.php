@@ -80,6 +80,7 @@ if($ofrenda === 'misionera'){
 
     $enviosMisioNorte = $stmt->fetchAll();
     $enviosNorte = $enviosMisioNorte;
+    $ofrendas = 'Misionera';
 
 }
 
@@ -87,12 +88,14 @@ if($ofrenda === 'gavillas'){
 
     $enviosGavillasNorte = $stmt->fetchAll();
     $enviosNorte = $enviosGavillasNorte;
+    $ofrendas = 'Gavillas';
 
 } 
 if($ofrenda === 'rayos'){
 
     $enviosRayosNorte = $stmt->fetchAll();
         $enviosNorte = $enviosRayosNorte;
+        $ofrendas = 'Rayos';
 
 }     
 
@@ -100,8 +103,17 @@ if($ofrenda === 'fmn'){
 
     $enviosFmnNorte = $stmt->fetchAll();
         $enviosNorte = $enviosFmnNorte;
+        $ofrendas = 'Fmn';
  }
-    
+
+ if($ofrenda === 'd_diezmo'){
+
+    $enviosDiezmoNorte = $stmt->fetchAll();
+    $enviosNorte = $enviosDiezmoNorte;
+    $ofrendas = 'Diezmo de diezmo';
+
+}   
+
  $query = "SELECT I.iglesia, " .$concat. "
  FROM envios_fn E 
  INNER JOIN user I ON I.id = E.user_id
@@ -134,7 +146,12 @@ if($ofrenda === 'fmn'){
             $enviosCentro = $enviosFmnCentro;
     
     }       
+    if($ofrenda === 'd_diezmo'){
+
+        $enviosDiezmoCentro = $stmt->fetchAll();
+        $enviosCentro = $enviosDiezmoCentro;
     
+    }  
     $query = "SELECT I.iglesia, " .$concat. "
     FROM envios_fn E 
     INNER JOIN user I ON I.id = E.user_id
@@ -171,7 +188,13 @@ if($ofrenda === 'fmn'){
             $enviosSur = $enviosFmnSur;
             $ofrendas = 'Fmn';
  }    
+ if($ofrenda === 'd_diezmo'){
 
+    $enviosDiezmoSur = $stmt->fetchAll();
+    $enviosSur = $enviosDiezmoSur;
+    $ofrendas = 'Diezmo de Diezmo';
+
+}
  return $this->render('report_fondo_nal/index.html.twig', array(
      'ofrendas' => $ofrendas, 
      'ofrenda' => $ofrenda, 

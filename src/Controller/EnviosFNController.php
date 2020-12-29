@@ -177,8 +177,7 @@ class EnviosFNController extends AbstractController
    
            if($form->isSubmitted() && $form->isValid())
            {   
-               $user = $this->getUser();
-               $envio->setUser($user);
+               
                $em->persist($envio);
                $em->flush();
                
