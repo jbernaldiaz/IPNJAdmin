@@ -85,7 +85,7 @@ class UserController extends AbstractController
 
         $repository = $this->getDoctrine()->getRepository(User::class);
             $user = $repository->find($id);
-
+            
             return $this->render('user/view.html.twig', [
                 'user' => $user
                 ]);
@@ -171,7 +171,7 @@ class UserController extends AbstractController
            $em = $this->getDoctrine()->getManager();
            $query = $em->createQuery(
                'SELECT u.password
-               FROM App\Entity\User u
+               FROM App:User u
                WHERE u.id = :id')->setParameter('id', $id);
            
            $currentPass = $query->getResult();

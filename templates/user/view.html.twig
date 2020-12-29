@@ -1,57 +1,50 @@
 {% extends "base.html.twig" %}
 
-{% block body %}
-	<div>
-	    <h2>Iglesia o Usuario</h2>
-	        <dl>
-	            <dt>Usuario</dt>
-	            <dd>
-	                {{ user.iglesia }}
-	                &nbsp;
-	            </dd>
-	            <br>
+{% block body %}		
+<div class="container">
+	<div class="row well">
+		<div class="page-header margin-none" >	
+			<h2 class="padding-none">Listado de Iglesias por Zonas</h2>
+		</div>
+		<div class="col-md-8">
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+						<th scope="col">id</th>
+						<th scope="col">Usuario</th>
+						<th scope="col">Zona</th>
+						<th scope="col">Email</th>
+						<th scope="col">Habilitado</th>
+						<th scope="col">Roles</th>
 
-	            <dt>Zona</dt>
-	            <dd>
-	                {{ user.zonas }}
-	                &nbsp;
-	            </dd>
-	            <br>
-
-				<dt>Email</dt>
-	            <dd>
-	                {{ user.email }}
-	                &nbsp;
-	            </dd>
-	            <br>
-
-	          <dt>Roles</dt>
-	            <dd>
-                	{% if user.roles == 'ROLE_ADMIN' %}
-						Administrador
-					{% elseif user.roles == 'ROLE_USER' %}
-						Usuario
-					{% elseif user.roles == 'ROLE_SUPER' %}
-						Supervisor
-                	{% endif %}
-	                &nbsp;
-	            </dd>
-	            <br>
-
-	            <dt>{{'Activo'}}</dt>
-	            <dd>
-                	{% if user.isActive == 1 %}
-						<span class="text-success">Habilitado</span>
-					{% elseif user.isActive == 0 %}
-						<span class="text-warning">Deshabilitado</span>
-                	{% endif %}
-	                &nbsp;
-	            </dd>
-	            <br>
-  <br>
-	    <br>         
-	          <br></dl>
-	    </div>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+						<th scope="row"> {{ user.id }}</th>
+						<td> {{ user.iglesia }}</td>
+						<td> {{ user.zonas }}</td>	  
+						<td> {{ user.email }}</td>
+						<td> {% if user.isActive == 1 %}
+									<span class="text-success">Habilitado</span>
+								{% elseif user.isActive == 0 %}
+									<span class="text-warning">Deshabilitado</span>
+								{% endif %}</td>
+						<td>{% if user.roles|first == 'ROLE_ADMIN' %}
+								Administrador
+							{% elseif user.roles|first == 'ROLE_USER' %}
+								Usuario
+							{% elseif user.roles|first == 'ROLE_SUPER' %}
+								Supervisor
+							{% endif %}</td>
+						</tr>						
+					</tbody>
+				</table>       
+	    	</div>
+		</div>
+	</div>
+</div>
 
 	  {#  <div class="col-md-3">
 	    	<h3>{{ 'Actions'|trans }}:</h3>
