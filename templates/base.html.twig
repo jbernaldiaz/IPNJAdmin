@@ -13,11 +13,13 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        
-  
+
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <img src="{{asset('images/logo1.png') }}" alt="IPNJHeader" height="130"/>
+            {% block head %}
+
+		{% endblock %}
             {% block menu %}
+            
                 {{ include('menu.html.twig') }}
         
              {% endblock %}

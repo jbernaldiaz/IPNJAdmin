@@ -49,6 +49,11 @@ security:
           - { path: ^/envios/update, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
           - { path: ^/envios/view, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
           - { path: ^/envios/add, roles: [ROLE_USER] }
+          - { path: ^/envios_as/index, roles: [ROLE_ADMIN] }
+          - { path: ^/envios_as/edit, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios_as/update, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios_as/view, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios_as/add, roles: [ROLE_USER] }
           - { path: ^/report/fondo/nal, roles: [ROLE_ADMIN] }
           - { path: ^/consulta_fnacional/user, roles: [ROLE_USER] }
           - { path: ^/consulta_fnacional/admin, roles: [ROLE_ADMIN] }
