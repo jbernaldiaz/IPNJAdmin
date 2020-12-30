@@ -2,212 +2,124 @@
 
 namespace App\Controller;
 
-use App\Form\ReporteOfrendasNacionalesType;
-use PDO;
+use App\Entity\EnviosFN;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ReportFondoNalController extends AbstractController
 {
-
     /**
-     * @Route("/report/fondo/nal", name="report_fondo_nal")
+     * @Route("/excel", name="excel")
      */
-    
-
-public function reportAction(Request $request)
-{   
-       
-    $em = $this->getDoctrine()->getManager();
-    $db = $em->getConnection();
-    $queryAnio = "SELECT DISTINCT YEAR(anio)  FROM envios_fn";
-    $anioStmt = $db->prepare($queryAnio);
-    $paramsAnio = array();
-    $anioStmt->execute($paramsAnio);
-    $aniosResult = $anioStmt->fetchAll(PDO::FETCH_COLUMN);
-
-$arrayResultMap = array();
-
-foreach ($aniosResult as $valor) {
-   $arrayResultMap[$valor] = $valor;
-}
+    public function indexExcel()
+    {  
+        
+        $repository = $this->getDoctrine()->getRepository(EnviosFN::class);
+        $envio = $repository->findById(53);
 
 
-$optionAnio = array();
-$optionAnio["aniosResult"] = $aniosResult;
-$optionAnio["arrayResulMap"] = $arrayResultMap;
+                $spreadsheet = new Spreadsheet();
+                
+                /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+                $sheet = $spreadsheet->getActiveSheet();
 
 
-    $form = $this->createForm(ReporteOfrendasNacionalesType::class, $optionAnio);   
- 
-    $form->handleRequest($request);
- 
-    if ($form->isSubmitted() && $form->isValid()) { 
+                foreach ($envio as $valor) {
+                    $spreadsheet->getActiveSheet()
+                        ->setCellValue('C3', $valor->getUser())
+                        ->setCellValue('C4', $valor->getAnio()->format('Y'))
+                        ->setCellValue('C5', $valor->getMes())
+                        ->setCellValue('C6', $valor->getFecha()->format("Y-m-d"))
+                        ->setCellValue('C7', $valor->getOperacion())
+                        ->setCellValue('C8', $valor->getCajero())
+                        ->setCellValue('E3', $valor->getDDiezmo())
+                        ->setCellValue('E4', $valor->getFSolidario())
+                        ->setCellValue('E5', $valor->getCuotaSocio())
+                        ->setCellValue('E6', $valor->getDiezmoPersonal())
+                        ->setCellValue('E7', $valor->getMisionera())
+                        ->setCellValue('E8', $valor->getRayos())
+                        ->setCellValue('E9', $valor->getGavillas()) 
+                        ->setCellValue('E10', $valor->getFmn())     
+                        ->setCellValue('E11', $valor->getTotal())          
+                        ;
+        
+                    
+                }
 
 
-    $ofrenda = $form->get("ofrenda")->getData();
-    $anio = $form->get("anio")->getData();
-    
+      $sheet->setCellValue('B2', 'Informacion de la transacción')
+            ->setCellValue('D2', 'Detalles del Envio')
+            ->setCellValue('B3', 'Iglesia')
+            ->setCellValue('B4', 'Año')
+            ->setCellValue('B5', 'Mes')
+            ->setCellValue('B6', 'Fecha')
+            ->setCellValue('B7', 'Operacion')
+            ->setCellValue('B8', 'Cajero')
+            ->setCellValue('D3', 'Diezmo de Diezmo')
+            ->setCellValue('D4', 'Fondo Solidario')
+            ->setCellValue('D5', 'Cuota')
+            ->setCellValue('D6', 'Diezmo Personal')
+            ->setCellValue('D7', 'O. Misionera')
+            ->setCellValue('D8', 'O. Rayos')
+            ->setCellValue('D9', 'O. Gavillas')
+            ->setCellValue('D10', 'FMN')
+            ->setCellValue('D11', 'Total');
 
-    $em = $this->getDoctrine()->getManager();
-    $db = $em->getConnection();
+        
+            $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);    
+            $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(12);
 
-$concat = "GROUP_CONCAT(if(mes = 'Enero'," . $ofrenda . ", NULL)) as 'a',
-    GROUP_CONCAT(if(mes = 'Febrero', " . $ofrenda . ", NULL)) as 'b', 
-    GROUP_CONCAT(if(mes = 'Marzo'," . $ofrenda . ", NULL)) as 'c',
-    GROUP_CONCAT(if(mes = 'Abril'," . $ofrenda . ", NULL)) as 'd',
-    GROUP_CONCAT(if(mes = 'Mayo'," . $ofrenda . ", NULL)) as 'e',
-    GROUP_CONCAT(if(mes = 'Junio'," . $ofrenda . ", NULL)) as 'f',
-    GROUP_CONCAT(if(mes = 'Julio'," . $ofrenda . ", NULL)) as 'g',
-    GROUP_CONCAT(if(mes = 'Agosto'," . $ofrenda . ", NULL)) as 'h',
-    GROUP_CONCAT(if(mes = 'Septiembre'," . $ofrenda . ", NULL)) as 'i',
-    GROUP_CONCAT(if(mes = 'Octubre'," . $ofrenda . ", NULL)) as 'j',
-    GROUP_CONCAT(if(mes = 'Noviembre'," . $ofrenda . ", NULL)) as 'k',
-    GROUP_CONCAT(if(mes = 'Diciembre'," . $ofrenda . ", NULL)) as 'l'";
+            $spreadsheet->getActiveSheet()->mergeCells('B2:C2');
+            $spreadsheet->getActiveSheet()->mergeCells('D2:E2');
 
-    $query = "SELECT I.iglesia, " .$concat. "
-    FROM envios_fn E 
-    INNER JOIN user I ON I.id = E.user_id
-    INNER JOIN zonas U ON U.id = I.zonas_id
-    WHERE YEAR(anio) = " . $anio . " AND U.id = '1'
-    GROUP BY user_id";
-    $stmt = $db->prepare($query);
-    $params = array();
-    $stmt->execute($params);
+            $spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+            $spreadsheet->getDefaultStyle()->getFont()->setSize(14);
 
-if($ofrenda === 'misionera'){
+            $spreadsheet->getActiveSheet()->getStyle('C3:C8')
+    ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+            $styleArray = [
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                        'color' => ['argb' => 'FFFF0000'],
+                    ],
+                ],
+                'font' => [
+                    'bold' => true,
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+                'borders' => [
+                    'top' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+            ];
+            
+            $spreadsheet->getActiveSheet()->getStyle('B2:E2')->applyFromArray($styleArray);
 
-    $enviosMisioNorte = $stmt->fetchAll();
-    $enviosNorte = $enviosMisioNorte;
-    $ofrendas = 'Misionera';
-
-}
-
-if($ofrenda === 'gavillas'){
-
-    $enviosGavillasNorte = $stmt->fetchAll();
-    $enviosNorte = $enviosGavillasNorte;
-    $ofrendas = 'Gavillas';
-
-} 
-if($ofrenda === 'rayos'){
-
-    $enviosRayosNorte = $stmt->fetchAll();
-        $enviosNorte = $enviosRayosNorte;
-        $ofrendas = 'Rayos';
-
-}     
-
-if($ofrenda === 'fmn'){
-
-    $enviosFmnNorte = $stmt->fetchAll();
-        $enviosNorte = $enviosFmnNorte;
-        $ofrendas = 'Fmn';
- }
-
- if($ofrenda === 'd_diezmo'){
-
-    $enviosDiezmoNorte = $stmt->fetchAll();
-    $enviosNorte = $enviosDiezmoNorte;
-    $ofrendas = 'Diezmo de diezmo';
-
-}   
-
- $query = "SELECT I.iglesia, " .$concat. "
- FROM envios_fn E 
- INNER JOIN user I ON I.id = E.user_id
- INNER JOIN zonas U ON U.id = I.zonas_id
- WHERE YEAR(anio) = " . $anio . " AND U.id = '2'
- GROUP BY user_id";
-    $stmtCentro = $db->prepare($query);
-    $params = array();
-    $stmtCentro->execute($params);
-
-    if($ofrenda === 'misionera'){
-
-        $enviosMisioCentro = $stmtCentro->fetchAll();
-        $enviosCentro = $enviosMisioCentro;
-    }
-    if($ofrenda === 'gavillas'){
-    
-        $enviosGavillasCentro = $stmtCentro->fetchAll();
-        $enviosCentro = $enviosGavillasCentro;
-    } 
-    if($ofrenda === 'rayos'){
-    
-        $enviosRayosCentro = $stmtCentro->fetchAll();
-        $enviosCentro = $enviosRayosCentro;
-    
-    } 
-    if($ofrenda === 'fmn'){
-    
-        $enviosFmnCentro = $stmtCentro->fetchAll();
-            $enviosCentro = $enviosFmnCentro;
-    
-    }       
-    if($ofrenda === 'd_diezmo'){
-
-        $enviosDiezmoCentro = $stmt->fetchAll();
-        $enviosCentro = $enviosDiezmoCentro;
-    
-    }  
-    $query = "SELECT I.iglesia, " .$concat. "
-    FROM envios_fn E 
-    INNER JOIN user I ON I.id = E.user_id
-    INNER JOIN zonas U ON U.id = I.zonas_id
-    WHERE YEAR(anio) = " . $anio . " AND U.id = '3'
-    GROUP BY user_id";
-    $stmtSur = $db->prepare($query);
-    $params = array();
-    $stmtSur->execute($params);
-
-
-    if($ofrenda === 'misionera'){
-
-        $enviosMisioSur = $stmtSur->fetchAll();
-        $enviosSur = $enviosMisioSur;
-        $ofrendas = 'Misionera';
-    }
-    if($ofrenda === 'gavillas'){
-    
-        $enviosGavillasSur = $stmtSur->fetchAll();
-        $enviosSur = $enviosGavillasSur;
-        $ofrendas = 'Gavillas';
-    
-    } 
-    if($ofrenda === 'rayos'){
-    
-        $enviosRayosSur = $stmtSur->fetchAll();
-        $enviosSur = $enviosRayosSur;
-        $ofrendas = 'Rayos';
-    } 
-    if($ofrenda === 'fmn'){
-    
-        $enviosFmnSur = $stmtSur->fetchAll();
-            $enviosSur = $enviosFmnSur;
-            $ofrendas = 'Fmn';
- }    
- if($ofrenda === 'd_diezmo'){
-
-    $enviosDiezmoSur = $stmt->fetchAll();
-    $enviosSur = $enviosDiezmoSur;
-    $ofrendas = 'Diezmo de Diezmo';
-
-}
- return $this->render('report_fondo_nal/index.html.twig', array(
-     'ofrendas' => $ofrendas, 
-     'ofrenda' => $ofrenda, 
-     'anio' => $anio, 
-     'enviosNorte' => $enviosNorte,
-     'enviosCentro' => $enviosCentro, 
-     'enviosSur' => $enviosSur
-));
-    
-}
- 
-     return $this->render('report_fondo_nal/report.html.twig', array('form' => $form->createView()));
-}
-
+                $sheet->setTitle("My First Worksheet");
+                
+                // Create your Office 2007 Excel (XLSX Format)
+                $writer = new Xlsx($spreadsheet);
+                
+                // Create a Temporary file in the system
+                $fileName = 'my_first_excel_symfony4.xlsx';
+                $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+                
+                // Create the excel file in the tmp directory of the system
+                $writer->save($temp_file);
+                
+                // Return the excel file as an attachment
+                return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+            }
+        
 
 }
