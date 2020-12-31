@@ -95,7 +95,9 @@ class ConsultaUserController extends AbstractController
             
           return $this->render('consulta_user/consultaASSuper.html.twig', array('zonaUser' => $zonaUser, 'user' => $user,'envio' => $envio));
       }
-    
+
+      
+//Reporte cruzado por aportes Asistencia Social
     /**
      * @Route("/report/asistencia", name="report_as")
      */
@@ -232,14 +234,16 @@ class ConsultaUserController extends AbstractController
           
       }
  
-     return $this->render('consulta_user/report.html.twig', array('form' => $form->createView()));
-}
+     return $this->render('consulta_user/reporte_as.html.twig', array('form' => $form->createView()));
+    }
 
-/**
-     * @Route("/report/fondo/nal", name="report_fondo_nal")
+//Fin reporte Asistencia Social
+
+
+//Reporte cruzado por ofrendas FONDO NACIONAL
+    /**
+     * @Route("/report/nacional", name="report_fn")
      */
-    
-
     public function reportAction(Request $request)
     {   
            
@@ -419,7 +423,7 @@ class ConsultaUserController extends AbstractController
         $ofrendas = 'Diezmo de Diezmo';
     
     }
-     return $this->render('report_fondo_nal/index.html.twig', array(
+     return $this->render('consulta_user/report_fn.html.twig', array(
          'ofrendas' => $ofrendas, 
          'ofrenda' => $ofrenda, 
          'anio' => $anio, 
@@ -430,7 +434,9 @@ class ConsultaUserController extends AbstractController
         
     }
      
-         return $this->render('report_fondo_nal/report.html.twig', array('form' => $form->createView()));
+         return $this->render('consulta_user/reporte_fn.html.twig', array('form' => $form->createView()));
     }
+//Fin reporte Fondo Nacional
+
 
 }

@@ -36,7 +36,7 @@
 					</a>
 					<br />
 
-					<a href="{{ path('report_fondo_nal') }}" class="btn btn-danger btn-block">
+					<a href="{{ path('report_fn') }}" class="btn btn-danger btn-block">
 						<span class="glyphicon glyphicon-edit"></span>
 							{{ 'Reporte por ofrenda' }}
 					</a>
@@ -61,7 +61,7 @@
 					</a>
 					<br />
 					
-					<a href="" class="btn btn-danger btn-block">
+					<a href="{{ path('report_as') }}" class="btn btn-danger btn-block">
 						<span class="glyphicon glyphicon-edit"></span>
 							{{ 'Reporte por Aportes' }}
 					</a>
@@ -82,6 +82,7 @@
 						{% endif %}
 						{% if is_granted('ROLE_USER') %}
 
+				<div class="col-md-4 col-md-offset-4">
 					<a href="{{ path('addEnvios') }}" class="btn btn-primary btn-lg btn-block">
 						<span class="glyphicon glyphicon-edit"></span>
 							{{ 'Enviar Detalles F. Nacional' }}
@@ -105,7 +106,7 @@
 							{{ 'Mis Envios A. Social' }}
 					</a>
 					<br />
-							
+				</div>		
 						{% endif %}	
 			
 		</div>				
