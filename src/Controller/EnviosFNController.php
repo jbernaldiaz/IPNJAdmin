@@ -121,11 +121,10 @@ class EnviosFNController extends AbstractController
     /**
      * @Route("/envios/view{id}", name="viewEnvio")
      */
-    public function viewAction($id)
+    public function viewEnviosAction($id)
     {
-
         $repository = $this->getDoctrine()->getRepository(EnviosFN::class);
-            $envio = $repository->find($id);
+        $envio = $repository->find($id);
 
             return $this->render('envios_fn/view.html.twig', [
                 'envio' => $envio

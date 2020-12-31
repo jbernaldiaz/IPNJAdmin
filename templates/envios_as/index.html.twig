@@ -40,9 +40,9 @@
                             <td>{{ envio.total }}</td>
                             <td>{{ envio.createAt|date('d-m-Y  -  H:i') }}</td>
                             <td class="action">
-                            <a href="{{ path('viewEnvioAS', { id: envio.id }) }}" >Ver</a>
-                                    <a href="{{ path('editEnvioAS', { id: envio.id }) }}">Editar</a>
-                                <a>Excel</a>
+                            <a href="{{ path('viewEnvioAS', { id: envio.id }) }}" class="btn btn-sm  btn-info" >Ver</a>
+                                    <a href="{{ path('editEnvioAS', { id: envio.id }) }}" class="btn btn-sm  btn-danger">Editar</a>
+                            <a href="{{ path('excelASRecibo', { id: envio.id }) }}" class="btn btn-sm  btn-success">Excel</a>
                                 
                                 </td>
                         </tr>

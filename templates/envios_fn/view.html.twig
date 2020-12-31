@@ -76,14 +76,14 @@
 					<a href="{{ path('consultaFN_user') }}" class="btn btn-sm btn-info">Atras</a> 
 			    {% endif %}
 			    {% if is_granted('ROLE_SUPER') %}
-					<a href="{{ path('consulta_fnacional_super') }}" class="btn btn-sm btn-info">Atras</a> 
+					<a href="{{ path('consultaFN_super') }}" class="btn btn-sm btn-info">Atras</a> 
 			    {% endif %}
 			    {% if is_granted('ROLE_ADMIN') %}
 					<a href="{{ path('indexEnvios') }}" class="btn btn-sm btn-info">Atras</a> 
 			    {% endif %}
 
-			{#	<a href="{{ path('ipnj_exportar_excel', { id: envio.id }) }}" class="btn btn-sm btn-danger btn-delete">Excel</a>
-				<a href="{{ path('ipnj_recibo_pdf', { id: envio.id }) }}" class="btn btn-sm btn-primary">PDF</a>
+				<a href="{{ path('excelFNRecibo', { id: envio.id }) }}" class="btn btn-sm  btn-success">Excel</a>
+                            {#	<a href="{{ path('ipnj_recibo_pdf', { id: envio.id }) }}" class="btn btn-sm btn-primary">PDF</a>
 			#}</center>
 			<br />
 			<br />
