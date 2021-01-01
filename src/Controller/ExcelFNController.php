@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ReportFNController extends AbstractController
+class ExcelFNController extends AbstractController
 {
    /**
      * @Route("/excel_fn/recibo{id}", name="excelFNRecibo")
