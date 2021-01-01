@@ -103,7 +103,7 @@ class EnviosASController extends AbstractController
             $em->flush();
             $this->addFlash('exito', EnviosAS::REGISTRO_EXITOSO);
             
-           return $this->redirectToRoute('addEnvios');
+           return $this->redirectToRoute('addEnviosAS');
         }
         
         return $this->render('envios_as/add.html.twig', ['form' => $form->createView()]);

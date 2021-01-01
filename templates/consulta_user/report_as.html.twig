@@ -25,8 +25,9 @@
 				</tr>
 				<tr class="success">
 					<td colspan="14" align="center"><b>{{ aportes }} Zona Norte</b></td>
-				</tr>
+				
 				{% for enviosNorte in enviosNorte %}
+				</tr>
 					<tr>
 					<td align="left">{{ enviosNorte.iglesia }}</td>
 					<td align="right">{{ enviosNorte.a }}</td>
@@ -41,14 +42,16 @@
 					<td align="right">{{ enviosNorte.j }}</td>
 					<td align="right">{{ enviosNorte.k }}</td>
 					<td align="right">{{ enviosNorte.l }}</td>
-				{#	<td align="right">{{ enviosNorte.a + enviosNorte.b + enviosNorte.c + enviosNorte.d + enviosNorte.e + enviosNorte.f + enviosNorte.g + enviosNorte.h + enviosNorte.i + enviosNorte.j + enviosNorte.k + enviosNorte.l }}</td>
-					#}
+					<td align="right">{{ enviosNorte.a + enviosNorte.b + enviosNorte.c + enviosNorte.d + enviosNorte.e + enviosNorte.f + enviosNorte.g + enviosNorte.h + enviosNorte.i + enviosNorte.j + enviosNorte.k + enviosNorte.l }}</td>
+				
 				</tr>
+				{% endfor %}
 				<tr class="success">
 					<td colspan="14" align="center"><b>{{ aportes }} Zona Centro</b></td>
 				</tr>
-				{% endfor %}
+				
 				{% for enviosCentro in enviosCentro %}
+				
 					<tr>
 					<td align="left">{{ enviosCentro.iglesia }}</td>
 					<td align="right">{{ enviosCentro.a }}</td>
@@ -63,8 +66,8 @@
 					<td align="right">{{ enviosCentro.j }}</td>
 					<td align="right">{{ enviosCentro.k }}</td>
 					<td align="right">{{ enviosCentro.l }}</td>
-				{#	<td align="right">{{ enviosCentro.a + enviosCentro.b + enviosCentro.c + enviosCentro.d + enviosCentro.e + enviosCentro.f + enviosCentro.g + enviosCentro.h + enviosCentro.i + enviosCentro.j + enviosCentro.k + enviosCentro.l }}</td>
-				#}</tr>
+					<td align="right">{{ enviosCentro.a + enviosCentro.b + enviosCentro.c + enviosCentro.d + enviosCentro.e + enviosCentro.f + enviosCentro.g + enviosCentro.h + enviosCentro.i + enviosCentro.j + enviosCentro.k + enviosCentro.l }}</td>
+				</tr>
 
 				{% endfor %}
 				<tr class="success">
@@ -86,15 +89,17 @@
 					<td align="right">{{ enviosSur.j }}</td>
 					<td align="right">{{ enviosSur.k }}</td>
 					<td align="right">{{ enviosSur.l }}</td>
-				{#	<td align="right">{{ enviosSur.a + enviosSur.b + enviosSur.c + enviosSur.d + enviosSur.e + enviosSur.f + enviosSur.g + enviosSur.h + enviosSur.i + enviosSur.j + enviosSur.k + enviosSur.l }}</td>
-				#}</tr>
+					<td align="right">{{ enviosSur.a + enviosSur.b + enviosSur.c + enviosSur.d + enviosSur.e + enviosSur.f + enviosSur.g + enviosSur.h + enviosSur.i + enviosSur.j + enviosSur.k + enviosSur.l }}</td>
+				</tr>
 
 				{% endfor %}
 				</table>
 				</div>
-{#    <a href="{{ path('ipnj_report_excel', { ofrenda: ofrenda, anio: anio }) }}" class="btn btn-sm btn-danger btn-delete">Excel</a>
-    <a href="{{ path('ipnj_report_pdf', { ofrenda: ofrenda, anio: anio }) }}" class="btn btn-sm btn-primary">PDF</a>
+				<div class="col-md-2 col-md-offset-10"><br />
+    <a href="{{ path('excelASReporte', { aporte: aporte, anio: anio }) }}" class="btn btn-success">Generar Excel</a>
+ {#   <a href="{{ path('ipnj_report_pdf', { ofrenda: ofrenda, anio: anio }) }}" class="btn btn-sm btn-primary">PDF</a>
 #}
+		</div>
 </div>
 </div>
 </div>
