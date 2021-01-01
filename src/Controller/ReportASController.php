@@ -18,10 +18,8 @@ class ReportASController extends AbstractController
      */
     public function excelAS($id): Response
     {  
-        
-        $repository = $this->getDoctrine()->getRepository(EnviosAS::class);
-        $envio = $repository->findById($id);
-
+            $em = $this->getDoctrine()->getManager();
+            $db = $em->getConnection();
 
                 $spreadsheet = new Spreadsheet();
                 
@@ -334,4 +332,494 @@ class ReportASController extends AbstractController
                 // Return the excel file as an attachment
                 return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
             }
+
+
+//Reporte cruzado por aportes FONDO NACIONAL
+    /**
+     * @Route("/excel_as/reporte/{aporte}/{anio}", name="excelASReporte")
+     */
+    public function reportAction($aporte, $anio)
+    {             
+        
+// COMIENZA LA CONSULTA
+
+                $em = $this->getDoctrine()->getManager();
+                $db = $em->getConnection();
+            
+                $concat = "GROUP_CONCAT(if(mes = 'Enero'," . $aporte . ", NULL)) as 'a',
+                GROUP_CONCAT(if(mes = 'Febrero', " . $aporte . ", NULL)) as 'b', 
+                GROUP_CONCAT(if(mes = 'Marzo'," . $aporte . ", NULL)) as 'c',
+                GROUP_CONCAT(if(mes = 'Abril'," . $aporte . ", NULL)) as 'd',
+                GROUP_CONCAT(if(mes = 'Mayo'," . $aporte . ", NULL)) as 'e',
+                GROUP_CONCAT(if(mes = 'Junio'," . $aporte . ", NULL)) as 'f',
+                GROUP_CONCAT(if(mes = 'Julio'," . $aporte . ", NULL)) as 'g',
+                GROUP_CONCAT(if(mes = 'Agosto'," . $aporte . ", NULL)) as 'h',
+                GROUP_CONCAT(if(mes = 'Septiembre'," . $aporte . ", NULL)) as 'i',
+                GROUP_CONCAT(if(mes = 'Octubre'," . $aporte . ", NULL)) as 'j',
+                GROUP_CONCAT(if(mes = 'Noviembre'," . $aporte . ", NULL)) as 'k',
+                GROUP_CONCAT(if(mes = 'Diciembre'," . $aporte . ", NULL)) as 'l'";
+      
+            
+            
+            $queryNorte = "SELECT I.iglesia, " .$concat. "
+            FROM envios_as E 
+            INNER JOIN user I ON I.id = E.user_id
+            INNER JOIN zonas U ON U.id = I.zonas_id
+            WHERE YEAR(anio) = " . $anio . " AND U.id = '1'
+            GROUP BY user_id";
+            $stmtNorte = $db->prepare($queryNorte);
+            $paramsNorte = array();
+            $stmtNorte->execute($paramsNorte);
+      
+            $queryCentro = "SELECT I.iglesia, " .$concat. "
+            FROM envios_as E 
+            INNER JOIN user I ON I.id = E.user_id
+            INNER JOIN zonas U ON U.id = I.zonas_id
+            WHERE YEAR(anio) = " . $anio . " AND U.id = '2'
+            GROUP BY user_id";
+            $stmtCentro = $db->prepare($queryCentro);
+            $paramsCentro = array();
+            $stmtCentro->execute($paramsCentro);     
+                  
+            $querySur = "SELECT I.iglesia, " .$concat. "
+            FROM envios_as E 
+            INNER JOIN user I ON I.id = E.user_id
+            INNER JOIN zonas U ON U.id = I.zonas_id
+            WHERE YEAR(anio) = " . $anio . " AND U.id = '3'
+            GROUP BY user_id";
+            $stmtSur = $db->prepare($querySur);
+            $paramsSur = array();
+            $stmtSur->execute($paramsSur);
+                
+
+                if($aporte === 'aporte_a'){
+      
+                    $aporteUnoNorte = $stmtNorte->fetchAll();
+                    $enviosNorte = $aporteUnoNorte;
+                    $aporteUnoCentro = $stmtCentro->fetchAll();
+                    $enviosCentro = $aporteUnoCentro;
+                    $aporteUnoSur = $stmtSur->fetchAll();
+                    $enviosSur = $aporteUnoSur;
+                }
+          
+                if($aporte === 'aporte_b'){
+          
+                    $aporteDosNorte = $stmtNorte->fetchAll();
+                    $enviosNorte = $aporteDosNorte;
+                    $aporteDosCentro = $stmtCentro->fetchAll();
+                    $enviosCentro = $aporteDosCentro;
+                    $aporteDosSur = $stmtSur->fetchAll();
+                    $enviosSur = $aporteDosSur;
+                } 
+                
+                
+            
+ //TERMINA LA CONSULTA    
+
+
+//COMIENZA EL EXCEL
+
+
+            $spreadsheet = new Spreadsheet();
+                            
+            /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+            $sheet = $spreadsheet->getActiveSheet();
+            
+
+        if($aporte === 'aporte_a')
+        {
+            $aportes = 'Aporte Voluntario 1';
+        }
+        if($aporte === 'aporte_b')
+        {
+            $aportes = 'Aporte Voluntario 2';
+        } 
+        
+
+
+        // escribimos en distintas celdas del documento el título de los campos que vamos a exportar
+        $sheet->setCellValue('A1', 'IGLESIA')
+            ->setCellValue('B1', 'Ene')
+            ->setCellValue('C1', 'Feb')
+            ->setCellValue('D1', 'Mar')
+            ->setCellValue('E1', 'Abr')
+            ->setCellValue('F1', 'May')
+            ->setCellValue('G1', 'Jun')
+            ->setCellValue('H1', 'Jul')
+            ->setCellValue('I1', 'Ago')
+            ->setCellValue('J1', 'Sep')
+            ->setCellValue('K1', 'Oct')
+            ->setCellValue('L1', 'Nov')
+            ->setCellValue('M1', 'Dic')
+            ->setCellValue('N1', 'Total')
+
+            ;
+        
+        
+        $i = 3;
+        $n = $i-1;
+        $a = 3;
+        $b = 3;
+        $c = 3;
+        $d = 3;
+        $e = 3;
+        $f = 3;
+        $g = 3;
+        $h = 3;
+        $is = 3;
+        $j = 3;
+        $k = 3;
+        $l = 3;
+        $m = 3;
+
+        
+        $spreadsheet->getActiveSheet()->setCellValue('A2', 'Envios Zona Norte de Ofrenda');
+        $spreadsheet->getActiveSheet()->setCellValue('H2', $aportes);
+
+        $spreadsheet->getActiveSheet()->getStyle('A2')
+            ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+            $spreadsheet->getActiveSheet()->getStyle('A2')
+            ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            
+        $spreadsheet->getActiveSheet()->getStyle('H2')
+        ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        $spreadsheet->getActiveSheet()->getStyle('H2')
+        ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+      
+        foreach ($enviosNorte as $valor) 
+        {
+           $totalNorte = $valor['a']+$valor['b']+$valor['c']+$valor['d']+$valor['e']+$valor['f']+$valor['g']+$valor['h']+$valor['i']+$valor['j']+$valor['k']+$valor['l'];
+
+            
+            //$spreadsheet->getActiveSheet()->insertNewRowBefore($i++, 1);
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$i++, $valor['iglesia']);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$a++, $valor['a']);
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$b++, $valor['b']);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$c++, $valor['c']);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.$d++, $valor['d']);
+            $spreadsheet->getActiveSheet()->setCellValue('F'.$e++, $valor['e']);
+            $spreadsheet->getActiveSheet()->setCellValue('G'.$f++, $valor['f']);
+            $spreadsheet->getActiveSheet()->setCellValue('H'.$g++, $valor['g']);
+            $spreadsheet->getActiveSheet()->setCellValue('I'.$h++, $valor['h']);
+            $spreadsheet->getActiveSheet()->setCellValue('J'.$is++, $valor['i']);
+            $spreadsheet->getActiveSheet()->setCellValue('K'.$j++, $valor['j']);
+            $spreadsheet->getActiveSheet()->setCellValue('L'.$k++, $valor['k']);
+            $spreadsheet->getActiveSheet()->setCellValue('M'.$l++, $valor['l']);
+            $spreadsheet->getActiveSheet()->setCellValue('N'.$m++, $totalNorte);
+            
+        }
+
+        
+            
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($i++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($a++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($b++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($c++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($d++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($e++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($f++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($g++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($h++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($is++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($j++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($k++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($l++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($m++, 1);
+    //columna B informacion
+            $styleArray = [
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '848484'],
+                    ],
+                ],
+                'font' => [
+                    'name' => "Myriad Pro",
+                    'size' => "12",
+                    'color' => [
+                        'argb' => "FFF2F2F2"
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'rotation' => 90,
+                    'startColor' => [
+                        'argb' => '16365C',
+                    ],
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '16365C'],
+                    ],
+                ],
+            ];
+
+
+
+//Fin Columna Info
+           $spreadsheet->getActiveSheet()->setCellValue('A'.$i++, 'Envios Zona Centro');
+           $spreadsheet->getActiveSheet()->getStyle('B'.$a++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('C'.$b++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('D'.$c++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('E'.$d++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('F'.$e++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('G'.$f++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('H'.$g++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('I'.$h++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('J'.$is++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('K'.$j++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('L'.$k++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('M'.$l++)->applyFromArray($styleArray);
+           $spreadsheet->getActiveSheet()->getStyle('N'.$m++)->applyFromArray($styleArray);
+
+        foreach ($enviosCentro as $valor) 
+        {
+            $totalCentro = $valor['a']+$valor['b']+$valor['c']+$valor['d']+$valor['e']+$valor['f']+$valor['g']+$valor['h']+$valor['i']+$valor['j']+$valor['k']+$valor['l'];
+            
+            
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$i++, $valor['iglesia']);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$a++, $valor['a']);
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$b++, $valor['b']);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$c++, $valor['c']);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.$d++, $valor['d']);
+            $spreadsheet->getActiveSheet()->setCellValue('F'.$e++, $valor['e']);
+            $spreadsheet->getActiveSheet()->setCellValue('G'.$f++, $valor['f']);
+            $spreadsheet->getActiveSheet()->setCellValue('H'.$g++, $valor['g']);
+            $spreadsheet->getActiveSheet()->setCellValue('I'.$h++, $valor['h']);
+            $spreadsheet->getActiveSheet()->setCellValue('J'.$is++, $valor['i']);
+            $spreadsheet->getActiveSheet()->setCellValue('K'.$j++, $valor['j']);
+            $spreadsheet->getActiveSheet()->setCellValue('L'.$k++, $valor['k']);
+            $spreadsheet->getActiveSheet()->setCellValue('M'.$l++, $valor['l']);
+            $spreadsheet->getActiveSheet()->setCellValue('N'.$m++, $totalCentro);
+            
+            
+        }
+
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($i++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($a++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($b++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($c++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($d++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($e++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($f++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($g++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($h++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($is++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($j++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($k++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($l++, 1);
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($m++, 1);
+
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$i++, 'Envios Zona Sur');
+            $spreadsheet->getActiveSheet()->getStyle('B'.$a++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('C'.$b++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('D'.$c++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('E'.$d++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('F'.$e++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('G'.$f++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('H'.$g++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('I'.$h++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('J'.$is++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('K'.$j++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('L'.$k++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('M'.$l++, '')->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('N'.$m++, '')->applyFromArray($styleArray);
+
+        foreach ($enviosSur as $valor) 
+        {
+            $totalSur = $valor['a']+$valor['b']+$valor['c']+$valor['d']+$valor['e']+$valor['f']+$valor['g']+$valor['h']+$valor['i']+$valor['j']+$valor['k']+$valor['l'];
+
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$i++, $valor['iglesia']);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$a++, $valor['a']);
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$b++, $valor['b']);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$c++, $valor['c']);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.$d++, $valor['d']);
+            $spreadsheet->getActiveSheet()->setCellValue('F'.$e++, $valor['e']);
+            $spreadsheet->getActiveSheet()->setCellValue('G'.$f++, $valor['f']);
+            $spreadsheet->getActiveSheet()->setCellValue('H'.$g++, $valor['g']);
+            $spreadsheet->getActiveSheet()->setCellValue('I'.$h++, $valor['h']);
+            $spreadsheet->getActiveSheet()->setCellValue('J'.$is++, $valor['i']);
+            $spreadsheet->getActiveSheet()->setCellValue('K'.$j++, $valor['j']);
+            $spreadsheet->getActiveSheet()->setCellValue('L'.$k++, $valor['k']);
+            $spreadsheet->getActiveSheet()->setCellValue('M'.$l++, $valor['l']);
+            $spreadsheet->getActiveSheet()->setCellValue('N'.$m++, $totalSur);
+            
+        }
+
+        $styleArrays = [
+            'borders' => [
+                'left' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                    'color' => ['argb' => 'FFFFFF'],
+                ],
+                'bottom' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                    'color' => ['argb' => '16365C'],
+                ],
+            ],
+        ];
+
+        $spreadsheet->getActiveSheet()->getStyle('A'.$i, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('B'.$a, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('C'.$b, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('D'.$c, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('E'.$d, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('F'.$e, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('G'.$f, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('H'.$g, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('I'.$h, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('J'.$is, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('K'.$j, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('L'.$k, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('M'.$l, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->getStyle('N'.$m, '')->applyFromArray($styleArrays);
+        $spreadsheet->getActiveSheet()->mergeCells('A2:G2');               
+        $spreadsheet->getActiveSheet()->mergeCells('H2:N2');
+
+
+
+            $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('2')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('3')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('4')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('5')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('6')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('7')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('8')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('9')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('10')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('11')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('12')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('13')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('14')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('15')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('16')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('17')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('18')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('19')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('20')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('21')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('22')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('23')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('24')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('25')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('26')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('27')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('28')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('29')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('30')->setRowHeight(20);
+            $spreadsheet->getActiveSheet()->getRowDimension('31')->setRowHeight(20);
+
+
+            $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(20);            
+            $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);         
+            $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+                     
+//FIN DEL EXCEL
+
+
+//ESTILOS DE LA TABLA
+            $styleArray = [
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '848484'],
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'rotation' => 90,
+                    'startColor' => [
+                        'argb' => '16365C',
+                    ],
+                ],
+                'font' => [
+                    'name' => "Myriad Pro",
+                    'size' => "12",
+                    'color' => [
+                        'argb' => "FFF2F2F2"
+                    ],
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+            ];
+
+            $spreadsheet->getActiveSheet()->getStyle('A1:N1')->applyFromArray($styleArray);
+
+
+
+// Columna Datos VALORES
+$styleValores = [
+    'numberFormat' => [
+        'formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_CURRENCY_USD_SIMPLE
+    ],
+    'font' => [
+        'name' => "Calibri",
+        'size' => "12",
+        'color' => [
+            'argb' => "3D3D3D"
+        ],
+    ],
+    'alignment' => [
+        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+        'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+    ],
+];
+
+$spreadsheet->getActiveSheet()->getStyle('B3:N30')->applyFromArray($styleValores);
+//FIN DATOS VALORES
+
+//fin ESTILOS DE LA TABLA
+
+
+        $sheet->setTitle("REPORTE ANUAL ASISTENCIA SOCIAL");
+                
+        // Create your Office 2007 Excel (XLSX Format)
+        $writer = new Xlsx($spreadsheet);
+        
+        // Create a Temporary file in the system
+        $fileName = 'REPORTE ANUAL ASISTENCIA SOCIAL.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        
+        // Create the excel file in the tmp directory of the system
+        $writer->save($temp_file);
+
+/*
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load('template.xlsx'); 
+        dump($spreadsheet->getActiveSheet());
+        exit;
+*/
+
+        // Return the excel file as an attachment
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+ }
+
+//TERMINA EL EXCEL
+ //Fin reporte Fondo Nacional
+
+
+
+
+
+
 }

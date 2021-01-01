@@ -241,6 +241,8 @@ class ConsultaUserController extends AbstractController
 
 
 //Reporte cruzado por ofrendas FONDO NACIONAL
+   
+
     /**
      * @Route("/report/nacional", name="report_fn")
      */
@@ -304,43 +306,39 @@ class ConsultaUserController extends AbstractController
         $params = array();
         $stmt->execute($params);
     
-    if($ofrenda === 'misionera'){
     
-        $enviosMisioNorte = $stmt->fetchAll();
-        $enviosNorte = $enviosMisioNorte;
-        $ofrendas = 'Misionera';
+        if($ofrenda === 'misionera'){
     
-    }
-    
-    if($ofrenda === 'gavillas'){
-    
-        $enviosGavillasNorte = $stmt->fetchAll();
-        $enviosNorte = $enviosGavillasNorte;
-        $ofrendas = 'Gavillas';
-    
-    } 
-    if($ofrenda === 'rayos'){
-    
-        $enviosRayosNorte = $stmt->fetchAll();
-            $enviosNorte = $enviosRayosNorte;
+            $enviosMisio = $stmt->fetchAll();
+            $enviosNorte = $enviosMisio;
+            $ofrendas = 'Misionera';
+        }
+        if($ofrenda === 'gavillas'){
+        
+            $enviosGavillas = $stmt->fetchAll();
+            $enviosNorte = $enviosGavillas;
+            $ofrendas = 'Gavillas';
+        
+        } 
+        if($ofrenda === 'rayos'){
+        
+            $enviosRayos = $stmt->fetchAll();
+            $enviosNorte = $enviosRayos;
             $ofrendas = 'Rayos';
-    
-    }     
-    
-    if($ofrenda === 'fmn'){
-    
-        $enviosFmnNorte = $stmt->fetchAll();
-            $enviosNorte = $enviosFmnNorte;
-            $ofrendas = 'Fmn';
-     }
-    
+        } 
+        if($ofrenda === 'fmn'){
+        
+            $enviosFmn = $stmt->fetchAll();
+                $enviosNorte = $enviosFmn;
+                $ofrendas = 'Fmn';
+     }    
      if($ofrenda === 'd_diezmo'){
     
-        $enviosDiezmoNorte = $stmt->fetchAll();
-        $enviosNorte = $enviosDiezmoNorte;
-        $ofrendas = 'Diezmo de diezmo';
+        $enviosDiezmo = $stmt->fetchAll();
+        $enviosNorte = $enviosDiezmo;
+        $ofrendas = 'Diezmo de Diezmo';
     
-    }   
+    }  
     
      $query = "SELECT I.iglesia, " .$concat. "
      FROM envios_fn E 
@@ -418,11 +416,13 @@ class ConsultaUserController extends AbstractController
      }    
      if($ofrenda === 'd_diezmo'){
     
-        $enviosDiezmoSur = $stmt->fetchAll();
+        $enviosDiezmoSur = $stmtSur->fetchAll();
         $enviosSur = $enviosDiezmoSur;
         $ofrendas = 'Diezmo de Diezmo';
     
     }
+
+    
      return $this->render('consulta_user/report_fn.html.twig', array(
          'ofrendas' => $ofrendas, 
          'ofrenda' => $ofrenda, 
