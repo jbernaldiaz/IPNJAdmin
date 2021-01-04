@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
 
 class EnviosFNController extends AbstractController
 {
@@ -190,5 +191,33 @@ class EnviosFNController extends AbstractController
        }
    
    
+    /**
+     * @Route("/recibo_fn/pdf{id}", name="pdfFNRecibo")
+     */
+    public function reciboFNPdfAction($id)
+    {
 
+        $repository = $this->getDoctrine()->getRepository(EnviosFN::class);
+        $envio = $repository->find($id);
+        
+         // Instantiate Dompdf with our options
+         $dompdf = new Dompdf();
+        
+         $html = $this->renderView('pdf/recibo_pdf_fn.html.twig', array('envio' => $envio)); 
+         
+         // Load HTML to Dompdf
+         $dompdf->loadHtml($html);
+         
+         // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+         $dompdf->setPaper('A4', 'portrait');
+ 
+         // Render the HTML as PDF
+         $dompdf->render();
+ 
+         // Output the generated PDF to Browser (inline view)
+         $dompdf->stream("Recibo Tesoreria Nacional.pdf", [
+             "Attachment" => true
+         ]);
+
+    }
 }
