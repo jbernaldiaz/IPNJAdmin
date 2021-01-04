@@ -6,7 +6,7 @@ use App\Entity\EnviosAS;
 use App\Entity\EnviosFN;
 use App\Form\ReportASType;
 use PDO;
-use App\Form\ReporteOfrendasNacionalesType;
+use App\Form\ReporteFNType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -269,7 +269,7 @@ class ConsultaUserController extends AbstractController
     $optionAnio["arrayResulMap"] = $arrayResultMap;
     
     
-        $form = $this->createForm(ReporteOfrendasNacionalesType::class, $optionAnio);   
+        $form = $this->createForm(ReporteFNType::class, $optionAnio);   
      
         $form->handleRequest($request);
      
