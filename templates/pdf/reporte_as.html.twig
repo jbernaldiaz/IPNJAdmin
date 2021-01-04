@@ -1,12 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'basePdf.html.twig' %}
 
 {% block body %}
-	{{ parent() }}
-<div class="container">
-	<div class="row well">
-		<div class="col-md-12"><h3 class="padding-none"> Envios {{ aportes }} correspondiente al {{ anio }}</h3>
+<div>
+	<div>
+		<div>
+            <h3 class="padding-none"> Envios {{ aportes }} correspondiente al {{ anio }}</h3>
 		</div>
-			<table class="table table-bordered table-striped table-hover">
+			<table>
 				<tr>
 					<th align="center">Iglesia</th>
 					<th align="center">Ene</th>
@@ -95,11 +95,7 @@
 				{% endfor %}
 				</table>
 				</div>
-				<div class="col-md-2 col-md-offset-10"><br />
-    <a href="{{ path('excelASReporte', { aporte: aporte, anio: anio }) }}" class="btn btn-success">Generar Excel</a>
-    <a href="{{ path('reportASPdf', { aporte: aporte, anio: anio }) }}" class="btn btn-sm btn-primary">PDF</a>
-
-		</div>
+				
 </div>
 </div>
 </div>
