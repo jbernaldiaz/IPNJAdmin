@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\EnviosFN;
+use App\Entity\EnviosAS;
 use Dompdf\Dompdf;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

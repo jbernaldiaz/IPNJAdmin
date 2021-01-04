@@ -5,8 +5,14 @@ namespace App\Entity;
 use App\Repository\EnviosFNRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * @UniqueEntity(
+ *     fields={"user", "mes", "anio"},
+ *     errorPath="mes",
+ *     message="paila"
+ * )
  * @ORM\Entity(repositoryClass=EnviosFNRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */

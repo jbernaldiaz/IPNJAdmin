@@ -110,10 +110,19 @@ class EnviosFNController extends AbstractController
             $em->flush();
             $this->addFlash('exito', EnviosFN::REGISTRO_EXITOSO);
             
-           return $this->redirectToRoute('addEnvios');
-        }
+            $repository = $this->getDoctrine()->getRepository(EnviosFN::class);
+            
+            $envios = $repository->find($envios);
+            $id = $repository->findById($envios);
+              
+          return $this->render('envios_fn/view.html.twig', array('id' => $id, 'envio' => $envios));
+                 
+   
+        }else{
+  
+          return $this->render('envios_fn/add.html.twig', array('form' => $form->createView()));
+         }
         
-        return $this->render('envios_fn/add.html.twig', ['form' => $form->createView()]);
     }
 
 
