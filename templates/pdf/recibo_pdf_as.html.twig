@@ -1,0 +1,72 @@
+{% extends 'basePdf.html.twig' %}
+
+{% block body %}
+<div>
+    <div>
+        <div>
+            <h4> Detalle de la Igesia en {{ envio.user }} correspondiente a {{ envio.mes }} del {{ envio.anio|date('Y') }}</h4>
+        </div>
+        <div>
+            <table id="t04">
+                <thead>
+                <tr>
+                    <th colspan="4">Iglesia Pentecostal del Nombre de Jesucristo <br> <p>Argentina</p>
+                    </th>
+
+                </tr>
+                <tr>
+                    <td colspan="3">Recibo No.</td>
+                    <td>{{ envio.id }}</td>
+
+                </tr>
+                </thead>
+                  <tbody>
+                    <tr>
+                        <th>Iglesia</th>
+                        <td>{{ envio.user }}</td>
+                        <th>Aporte Voluntario 1</th>
+                        <td>{{ envio.aporteA }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha</th>
+                        <td>{{ envio.fecha|date('d-m-Y') }}</td>
+                        <th>Aporte Voluntario 2</th>
+                        <td>{{ envio.aporteB }}</td>
+                    </tr>
+                    <tr>
+                        <th>Mes</th>
+                        <td>{{ envio.mes }}</td>
+                        <th rowspan="5"></th>
+                        <td rowspan="5"></td>
+                    </tr>
+                    <tr>
+                        <th>Año</th>
+                        <td>{{ envio.anio|date('Y') }}</td>
+                        
+                    </tr>
+                    <tr>
+                        <th>Operación</th>
+                        <td>{{ envio.operacion }}</td>
+                        
+                    </tr>
+                    <tr>
+                        <th>Cajero</th>
+                        <td>{{ envio.cajero }}</td>
+                        
+                    </tr>
+                    <tr>	
+                        <th>Detalle Enviado</th>
+                        <td>{{ envio.createAt|date('d-m-Y') }}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="3">Total</td>
+                        <td>{{ envio.total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+	    </div>
+    </div>
+</div>
+
+{% endblock %}
