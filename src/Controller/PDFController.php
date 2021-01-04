@@ -307,7 +307,7 @@ class PDFController extends AbstractController
 
     // Output the generated PDF to Browser (inline view)
     $dompdf->stream("Reporte Anual Asistencia Social.pdf", [
-        "Attachment" => true
+        "Attachment" => false
     ]);
      
         
