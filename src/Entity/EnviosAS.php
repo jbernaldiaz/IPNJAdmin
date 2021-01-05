@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=EnviosASRepository::class)
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
- *     fields={"mes", "anio", "user"},
+ *     fields={"mes", "anio"},
  *     errorPath="mes",
- *     message="This port is already in use on that host."
+ *     message="Ya realizó envio de detalles ese mes del año"
  * )
  */
 class EnviosAS

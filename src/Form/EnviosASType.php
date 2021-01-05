@@ -51,8 +51,6 @@ class EnviosASType extends AbstractType
             ->add('aporteA', IntegerType::class)
             ->add('aporteB', IntegerType::class)
             ->add('total', IntegerType::class)  
-            
-            ->add('enviar', SubmitType::class)  
         ;
     }
 

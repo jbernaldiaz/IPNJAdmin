@@ -52,8 +52,7 @@ class EnviosASController extends AbstractController
      * @Route("/envios_as/create", name="createEnviosAS")
      */
     public function createAsistenciaAction(Request $request)
-    {
-/* 
+    { 
         $captcha = [
             'g-recaptcha-response' => $request->request->get('g-recaptcha-response'),
         
@@ -89,7 +88,7 @@ class EnviosASController extends AbstractController
           //Si es error
           echo '-> Error';
         }
-*/
+
         $envios = new EnviosAS();
         $form = $this->createCreateForm($envios);
         $form->handleRequest($request);
