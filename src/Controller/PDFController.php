@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\EnviosFN;
+use App\Entity\EnviosAS;
 use Dompdf\Dompdf;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -307,7 +309,7 @@ class PDFController extends AbstractController
 
     // Output the generated PDF to Browser (inline view)
     $dompdf->stream("Reporte Anual Asistencia Social.pdf", [
-        "Attachment" => false
+        "Attachment" => true
     ]);
      
         
