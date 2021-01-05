@@ -53,7 +53,7 @@ class EnviosASController extends AbstractController
      */
     public function createAsistenciaAction(Request $request)
     {
-
+/* 
         $captcha = [
             'g-recaptcha-response' => $request->request->get('g-recaptcha-response'),
         
@@ -89,7 +89,7 @@ class EnviosASController extends AbstractController
           //Si es error
           echo '-> Error';
         }
-
+*/
         $envios = new EnviosAS();
         $form = $this->createCreateForm($envios);
         $form->handleRequest($request);
@@ -101,10 +101,11 @@ class EnviosASController extends AbstractController
             $envios->setUser($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($envios);
+            
             $em->flush();
             $this->addFlash('exito', EnviosAS::REGISTRO_EXITOSO);
             
-           return $this->redirectToRoute('addEnviosAS');
+           return $this->redirectToRoute('consultaAS_user');
         }
         
         return $this->render('envios_as/add.html.twig', ['form' => $form->createView()]);

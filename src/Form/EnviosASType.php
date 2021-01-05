@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -50,6 +51,8 @@ class EnviosASType extends AbstractType
             ->add('aporteA', IntegerType::class)
             ->add('aporteB', IntegerType::class)
             ->add('total', IntegerType::class)  
+            
+            ->add('enviar', SubmitType::class)  
         ;
     }
 

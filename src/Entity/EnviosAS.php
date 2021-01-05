@@ -4,35 +4,21 @@ namespace App\Entity;
 
 use App\Repository\EnviosASRepository;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueEntity(
- *     fields={"user", "mes", "anio"},
- *     errorPath="mes",
- *     message="paila"
- * )
  * @ORM\Entity(repositoryClass=EnviosASRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"mes", "anio", "user"},
+ *     errorPath="mes",
+ *     message="This port is already in use on that host."
+ * )
  */
 class EnviosAS
 {
-     /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAtValue(): void
-    {
-        $this->create_at = new \DateTime();
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setUpdatedAtValue(): void
-    {
-        $this->update_at = new \DateTime();
-    }
+     
 
     const REGISTRO_EXITOSO = 'Registro un nuevo envio exitosamente!';
     
@@ -163,18 +149,6 @@ class EnviosAS
         return $this;
     }
 
-    public function getTotal(): ?int
-    {
-        return $this->total;
-    }
-
-    public function setTotal(int $total): self
-    {
-        $this->total = $total;
-
-        return $this;
-    }
-
     public function getAporteA(): ?int
     {
         return $this->aporteA;
@@ -198,7 +172,18 @@ class EnviosAS
 
         return $this;
     }
+   
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
 
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
+
+        return $this;
+    }
     public function getCreateAt(): ?\DateTimeInterface
     {
         return $this->createAt;
@@ -261,4 +246,6 @@ class EnviosAS
 
         return $this;
     }
+
+
 }

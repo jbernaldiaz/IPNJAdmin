@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Reporte Anual Tesoreria Nacional{% endblock %}
 {% block body %}
 	{{ parent() }}
 <div class="container">
 	<div class="row well">
-		<div class="col-md-12"><h3 class="padding-none"> Envios {{ ofrendas }} correspondiente al {{ anio }}</h3>
+		<div class="col-md-12"><h3 class="padding-none"> Detalles de Ofrenda {{ ofrendas }} correspondiente al {{ anio }}</h3>
 		</div>
 			<table class="table table-bordered table-striped table-hover">
 				<thead>
