@@ -19,6 +19,13 @@ class EnviosASRepository extends ServiceEntityRepository
         parent::__construct($registry, EnviosAS::class);
     }
 
+    public function TodosLosEnvios()
+    {
+        return $this->createQueryBuilder('e')
+            ->getQuery()
+        ;
+    }
+
     // /**
     //  * @return EnviosAS[] Returns an array of EnviosAS objects
     //  */

@@ -5,31 +5,37 @@ namespace App\Controller;
 use App\Entity\EnviosAS;
 use App\Form\EnviosASType;
 use Dompdf\Dompdf;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class EnviosASController extends AbstractController
+class EnviosASController extends AbstractController 
 {
     /**
      * @Route("/envios_as/index", name="indexEnviosAS")
      */
-    public function index(): Response
+    public function indexAS(Request $request, PaginatorInterface $paginator)
     {
-        $repository = $this->getDoctrine()->getRepository(EnviosAS::class);
-        $envio = $repository->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository(EnviosAS::class)->TodosLosEnvios();
+            $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
-        return $this->render('envios_as/index.html.twig', [
-            'envio' => $envio
-            ]);
+            return $this->render('envios_as/index.html.twig', [
+                'pagination' => $pagination
+                ]);
 
     }
 
     /**
      * @Route("/envios_as/add", name="addEnviosAS")
      */
-    public function addAsistenciaAction()
+    public function addASAction()
     {
         $envios = new EnviosAS();
         $form = $this->createCreateForm($envios);

@@ -10,21 +10,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 use Dompdf\Dompdf;
 
 class EnviosFNController extends AbstractController
 {
     /**
-     * @Route("/envios/index", name="indexEnvios")
+     * @Route("/envios_fn/index", name="indexEnvios")
      */
-    public function index(): Response
+    public function indexFN(Request $request, PaginatorInterface $paginator): Response
     {
-        $repository = $this->getDoctrine()->getRepository(EnviosFN::class);
-        $envio = $repository->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository(EnviosFN::class)->TodosLosEnviosFN();
+            $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
-        return $this->render('envios_fn/index.html.twig', [
-            'envio' => $envio
-            ]);
+            return $this->render('envios_fn/index.html.twig', [
+                'pagination' => $pagination
+                ]);
 
     }
 

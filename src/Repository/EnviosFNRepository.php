@@ -19,17 +19,11 @@ class EnviosFNRepository extends ServiceEntityRepository
         parent::__construct($registry, EnviosFN::class);
     }
 
-    // /**
-    //  * @return EnviosFN[] Returns an array of EnviosFN objects
-    //  */
-  
-    public function encontrarPorZonas()
+    public function TodosLosEnviosFN()
     {
-
-        return $this->getEntityManager()
-                  ->createQuery(""
-        )->getResult();
-
+        return $this->createQueryBuilder('e')
+            ->getQuery()
+        ;
     }
    
 
