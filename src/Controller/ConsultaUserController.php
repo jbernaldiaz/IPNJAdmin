@@ -99,7 +99,7 @@ class ConsultaUserController extends AbstractController
       
 //Reporte cruzado por aportes Asistencia Social
     /**
-     * @Route("/report/asistencia", name="report_as")
+     * @Route("/reporte/asistencia", name="report_as")
      */
     public function reportAsistenciaAction(Request $request)
       {   
@@ -244,7 +244,7 @@ class ConsultaUserController extends AbstractController
    
 
     /**
-     * @Route("/report/nacional", name="report_fn")
+     * @Route("/reporte/nacional", name="report_fn")
      */
     public function reportAction(Request $request)
     {   

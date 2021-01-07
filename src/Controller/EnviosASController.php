@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\EnviosAS;
 use App\Form\EnviosASType;
+use App\Repository\EnviosASRepository;
 use Dompdf\Dompdf;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +17,13 @@ class EnviosASController extends AbstractController
     /**
      * @Route("/envios_as/index", name="indexEnviosAS")
      */
-    public function indexAS(Request $request, PaginatorInterface $paginator)
+    public function indexAS(Request $request,EnviosASRepository $enviosASRepository, PaginatorInterface $paginator)
     {
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->getRepository(EnviosAS::class)->TodosLosEnvios();
-            $pagination = $paginator->paginate(
+        //$em = $this->getDoctrine()->getManager();
+        //$query = $em->getRepository(EnviosAS::class)->TodosLosEnvios();
+        $query = $enviosASRepository->TodosLosEnvios();
+                
+        $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/

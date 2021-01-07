@@ -18,8 +18,8 @@ class ExcelASController extends AbstractController
      */
     public function excelAS($id): Response
     {  
-            $em = $this->getDoctrine()->getManager();
-            $db = $em->getConnection();
+        $repository = $this->getDoctrine()->getRepository(EnviosAS::class);
+        $envio = $repository->findById($id);
 
                 $spreadsheet = new Spreadsheet();
                 

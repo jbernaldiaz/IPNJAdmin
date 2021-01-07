@@ -460,7 +460,8 @@ class ExcelFNController extends AbstractController
                     $enviosDiezmoCentro = $stmt->fetchAll();
                     $enviosCentro = $enviosDiezmoCentro;
                 
-                }  
+                }
+                  
                 $query = "SELECT I.iglesia, " .$concat. "
                 FROM envios_fn E 
                 INNER JOIN user I ON I.id = E.user_id
