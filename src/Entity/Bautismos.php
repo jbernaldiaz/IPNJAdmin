@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=BautismosRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Bautismos
 {
@@ -35,12 +36,35 @@ class Bautismos
     /**
      * @ORM\Column(type="datetime")
      */
-    private $creadAt;
+    private $createAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $fotos;
+
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="baustismos")
+     */
+    private $user;
+
+
+
+
+
+    /** 
+     * @ORM\PrePersist
+     */
+    public function setCreateAtValue()
+    {
+        $this->createAt = new \DateTime();
+    }
+
+
+
+
 
     public function getId(): ?int
     {
@@ -83,14 +107,14 @@ class Bautismos
         return $this;
     }
 
-    public function getCreadAt(): ?\DateTimeInterface
+    public function getCreateAt(): ?\DateTimeInterface
     {
-        return $this->creadAt;
+        return $this->createAt;
     }
 
-    public function setCreadAt(\DateTimeInterface $creadAt): self
+    public function setCreateAt(\DateTimeInterface $createAt): self
     {
-        $this->creadAt = $creadAt;
+        $this->createAt = $createAt;
 
         return $this;
     }
@@ -103,6 +127,26 @@ class Bautismos
     public function setFotos(?string $fotos): self
     {
         $this->fotos = $fotos;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

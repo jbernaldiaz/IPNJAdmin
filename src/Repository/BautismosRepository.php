@@ -19,6 +19,14 @@ class BautismosRepository extends ServiceEntityRepository
         parent::__construct($registry, Bautismos::class);
     }
 
+    public function TodosLosBautismos()
+    {
+        return $this->createQueryBuilder('e')
+            ->getQuery()
+        ;
+    }
+
+
     // /**
     //  * @return Bautismos[] Returns an array of Bautismos objects
     //  */

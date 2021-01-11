@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+	<div class="main container">
+		<div class="row well">
+			{{ form_start(form, { 'attr' : {'novalidate': 'novalidate', 'role' : 'form'} }) }}
+				<div class="page-header">
+					<h2>Dar de alta un nuevo bautismo</h2>
+				</div>
+                
+            <div class="col-md-3">
+
+				
+                <div class="form-group">
+			        {{ form_label(form.fechaAt) }}
+			        {{ form_widget(form.fechaAt)}}
+			        <span class="text-danger">{{ form_errors(form.fechaAt) }}</span>
+			    </div>
+				<div class="form-group">
+			       {{ form_label(form.nombre) }}
+			        {{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder' : 'Nueva Registro de Zona'}}) }}
+			        <span class="text-danger">{{ form_errors(form.nombre) }}</span>
+			    </div>
+                <div class="form-group">
+			       {{ form_label(form.bautizo) }}
+			        {{ form_widget(form.bautizo, {'attr': {'class': 'form-control', 'placeholder' : 'Nueva Registro de Zona'}}) }}
+			        <span class="text-danger">{{ form_errors(form.bautizo) }}</span>
+			    </div>
+                <div class="form-group">
+			       {{ form_label(form.fotos) }}
+			        {{ form_widget(form.fotos, {'attr': {'class': 'form-control', 'placeholder' : 'Nueva Registro de Zona'}}) }}
+			        <span class="text-danger">{{ form_errors(form.fotos) }}</span>
+			    </div>
+
+		    <p><br />
+		    	<a href="{{ path('indexZona') }}" class="btn btn-sm btn-info">Regresar</a>
+		        {{ form_widget(form.save, {'label' : 'Agregar Bautismo', 'attr': {'class': 'btn btn-success'}}) }}
+		    </p>
+			</div>
+        
+                {{ form_end(form) }}
+			
+		</div>
+	</div>
+{% endblock %}

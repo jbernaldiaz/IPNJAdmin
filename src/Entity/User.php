@@ -74,6 +74,11 @@ class User implements UserInterface
      */
     private $enviosAS;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bautismos", mappedBy="user")
+     */
+    private $bautismos;
+
 
     
     
@@ -282,6 +287,26 @@ class User implements UserInterface
     public function setEnviosAS($enviosAS)
     {
         $this->enviosAS = $enviosAS;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of bautismos
+     */ 
+    public function getBautismos()
+    {
+        return $this->bautismos;
+    }
+
+    /**
+     * Set the value of bautismos
+     *
+     * @return  self
+     */ 
+    public function setBautismos($bautismos)
+    {
+        $this->bautismos = $bautismos;
 
         return $this;
     }
