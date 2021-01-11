@@ -19,7 +19,8 @@ class ReporteFNType extends AbstractType
             'Misionera'     => 'misionera' , 
             'Gavillas'   => 'gavillas', 
             'Rayos'     => 'rayos',
-            'FMN' => 'fmn'
+            'FMN' => 'fmn',
+            'Diezmo de diezmo' => 'd_diezmo'
             )))
 
         ->add('anio', ChoiceType::class, array('choices' => $optionAnio["data"]["arrayResulMap"] ))

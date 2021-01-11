@@ -106,7 +106,22 @@
 	</div>
 </div>
 
+<script>
+    var message = ('Esta seguro?');
+    
+    function confirmAdd()
+    {
+        confirm(message, function(result) {
+            if(result == true)
+            {
+                $('form')[0].submit();
+            }else{
+            	$('form')[0];
+            }
 
+        });
+    }
+</script>
 <script type="text/javascript">
   var onloadCallback = function() {
    let formSubmit = document.querySelector("#formSubmit");
@@ -115,22 +130,7 @@ formSubmit.removeAttribute("disabled");
 </script>
 <script src="https://www.google.com/recaptcha/api.js?">
 </script>
-<script>
-    var message = ('Esta seguro?');
-    
-    function confirmAdd()
-    {
-        bootbox.confirm(message, function(result) {
-            if(result == true)
-            {
-                $('form')[0].formSubmit();
-            }else{
-            	$('form')[0];
-            }
 
-        });
-    }
-</script>
 		</div>
 	</div>
 {% endblock %}
