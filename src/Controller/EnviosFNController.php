@@ -36,7 +36,7 @@ class EnviosFNController extends AbstractController
 
     
     /**
-     * @Route("/envios/add", name="addEnvios")
+     * @Route("/envios_fn/add", name="addEnvios")
      */
     public function addAction()
     {
@@ -61,7 +61,7 @@ class EnviosFNController extends AbstractController
     
 
     /**
-     * @Route("/envios/create", name="createEnvios")
+     * @Route("/envios_fn/create", name="createEnvios")
      */
     public function createAction(Request $request)
     {
@@ -135,7 +135,7 @@ class EnviosFNController extends AbstractController
 
 
     /**
-     * @Route("/envios/view{id}", name="viewEnvio")
+     * @Route("/envios_fn/view{id}", name="viewEnvio")
      */
     public function viewEnviosAction($id)
     {
@@ -152,7 +152,7 @@ class EnviosFNController extends AbstractController
 
 
     /**
-     * @Route("/envios/edit{id}", name="editEnvio")
+     * @Route("/envios_fn/edit{id}", name="editEnvio")
      */
        public function editAction($id)
        {
@@ -178,7 +178,7 @@ class EnviosFNController extends AbstractController
    
    
      /**
-     * @Route("/envios/update{id}", name="updateEnvios")
+     * @Route("/envios_fn/update{id}", name="updateEnvios")
      */
        public function updateAction($id, Request $request)
        {

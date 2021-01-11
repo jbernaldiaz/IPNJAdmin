@@ -44,19 +44,22 @@ security:
           - { path: ^/user/update, roles: [ROLE_ADMIN] }
           - { path: ^/zonas/index, roles: [ROLE_ADMIN] }
           - { path: ^/zonas/add, roles: [ROLE_ADMIN] }
-          - { path: ^/envios/index, roles: [ROLE_ADMIN] }
-          - { path: ^/envios/edit, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
-          - { path: ^/envios/update, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
-          - { path: ^/envios/view, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
-          - { path: ^/envios/add, roles: [ROLE_USER] }
+          - { path: ^/envios_fn/index, roles: [ROLE_ADMIN] }
+          - { path: ^/envios_fn/edit, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios_fn/update, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios_fn/view, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
+          - { path: ^/envios_fn/add, roles: [ROLE_USER] }
           - { path: ^/envios_as/index, roles: [ROLE_ADMIN] }
           - { path: ^/envios_as/edit, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
           - { path: ^/envios_as/update, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
           - { path: ^/envios_as/view, roles: [ROLE_ADMIN, ROLE_USER, ROLE_SUPER] }
           - { path: ^/envios_as/add, roles: [ROLE_USER] }
-          - { path: ^/report/fondo/nal, roles: [ROLE_ADMIN] }
-          - { path: ^/consulta_fnacional/user, roles: [ROLE_USER] }
-          - { path: ^/consulta_fnacional/admin, roles: [ROLE_ADMIN] }
+          - { path: ^/reporte/nacional, roles: [ROLE_ADMIN] }
+          - { path: ^/reporte/asistencia, roles: [ROLE_ADMIN] }
+          - { path: ^/consulta_fn/super, roles: [ROLE_SUPER] }
+          - { path: ^/consulta_fn/user, roles: [ROLE_USER] }
+          - { path: ^/consulta_as/super, roles: [ROLE_SUPER] }
+          - { path: ^/consulta_as/user, roles: [ROLE_USER] }
 
 
         # - { path: ^/admin, roles: ROLE_ADMIN }
