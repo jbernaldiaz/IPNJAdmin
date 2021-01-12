@@ -21,7 +21,7 @@ class EnviosASRepository extends ServiceEntityRepository
 
     public function TodosLosEnvios()
     {
-        return $this->createQueryBuilder('e')
+        return $this->createQueryBuilder('u')
             ->getQuery()
         ;
     }

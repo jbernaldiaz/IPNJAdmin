@@ -21,7 +21,7 @@ class BautismosRepository extends ServiceEntityRepository
 
     public function TodosLosBautismos()
     {
-        return $this->createQueryBuilder('e')
+        return $this->createQueryBuilder('u')
             ->getQuery()
         ;
     }

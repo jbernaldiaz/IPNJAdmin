@@ -5,10 +5,13 @@ namespace App\Form;
 use App\Entity\Bautismos;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 
 class BautismosType extends AbstractType
 {
@@ -26,7 +29,23 @@ class BautismosType extends AbstractType
         ]])
             ->add('nombre', TextType::class)
             ->add('bautizo', TextType::class)
-            ->add('fotos')
+            ->add('fotos', FileType::class, [
+                'label' => 'Agregue las fotos del bautismo',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+                'multiple' => true,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '1024k'
+                        
+                ])
+                 
+                 ]])
             ->add('save', SubmitType::class)
 
         ;
